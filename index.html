@@ -789,7 +789,26 @@ function loadState() {
     const saved = localStorage.getItem('jejuplan_v1');
     if (saved) {
       const parsed = JSON.parse(saved);
-      STATE.phases = parsed.phases || JSON.parse(JSON.stringify(DEFAULT_PHASES));
+      const base = parsed.phases || [];
+      // guide 필드는 항상 DEFAULT_PHASES에서 주입 (저장된 데이터에 없을 수 있음)
+      STATE.phases = JSON.parse(JSON.stringify(DEFAULT_PHASES)).map(defPh => {
+        const savedPh = base.find(p => p.id === defPh.id);
+        if (!savedPh) return defPh;
+        return {
+          ...defPh,
+          categories: defPh.categories.map(defCat => {
+            const savedCat = savedPh.categories.find(c => c.id === defCat.id);
+            if (!savedCat) return defCat;
+            return {
+              ...defCat,
+              tasks: defCat.tasks.map(defT => {
+                const savedT = savedCat.tasks.find(t => t.id === defT.id);
+                return savedT ? { ...defT, done: savedT.done } : defT;
+              })
+            };
+          })
+        };
+      });
       STATE.departDate = parsed.departDate || '2027-07-01';
       STATE.notif = parsed.notif || { deadline: true, weekly: false };
     } else {
