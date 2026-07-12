@@ -6,75 +6,112 @@
 <title>🏝️ 제주 이주 프로젝트</title>
 <style>
 :root {
-  --primary: #10B981;
-  --primary-light: #D1FAE5;
-  --primary-dark: #059669;
-  --indigo: #6366F1;
-  --indigo-light: #EEF2FF;
-  --orange: #F59E0B;
-  --orange-light: #FEF3C7;
+  --primary: #6C63FF;
+  --primary-dark: #5A52D5;
+  --primary-light: #EEF0FF;
+  --orange: #FF6B35;
+  --orange-light: #FFF0EB;
+  --green: #10B981;
+  --green-light: #ECFDF5;
   --red: #EF4444;
-  --red-light: #FEE2E2;
+  --red-light: #FEF2F2;
+  --yellow: #F59E0B;
   --sky: #0EA5E9;
   --sky-light: #E0F2FE;
-  --text: #111827;
+  --text: #1F2937;
   --text-2: #6B7280;
   --text-3: #9CA3AF;
-  --bg: #F0FDF4;
+  --bg: #F4F5F7;
   --card: #FFFFFF;
   --border: #E5E7EB;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.12), 0 4px 10px rgba(0,0,0,0.06);
   --radius: 14px;
+  --radius-sm: 10px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  padding-bottom: 72px;
 }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
 
 /* ── Header ── */
 .header {
-  background: linear-gradient(135deg, #059669 0%, #10B981 60%, #34D399 100%);
-  padding: 52px 20px 20px;
+  background: linear-gradient(135deg, #1E1B4B 0%, #4C3FA0 60%, #6C63FF 100%);
+  padding: 52px 20px 24px;
   color: white;
 }
-.header-label { font-size: 0.75rem; opacity: 0.8; font-weight: 500; letter-spacing: 0.05em; margin-bottom: 4px; }
-.header-title { font-size: 1.4rem; font-weight: 900; line-height: 1.2; }
-.dday-row {
-  display: flex; gap: 10px; margin-top: 16px;
-}
+.header-label { font-size: 0.7rem; opacity: 0.7; font-weight: 600; letter-spacing: 0.1em; margin-bottom: 4px; text-transform: uppercase; }
+.header-title { font-size: 1.35rem; font-weight: 800; line-height: 1.2; }
+.dday-row { display: flex; gap: 10px; margin-top: 18px; }
 .dday-box {
-  flex: 1; background: rgba(255,255,255,0.18); border-radius: 12px;
-  padding: 12px; text-align: center;
+  flex: 1; background: rgba(255,255,255,0.13); border-radius: 14px;
+  padding: 13px 8px; text-align: center;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.16);
 }
-.dday-num { font-size: 2rem; font-weight: 900; line-height: 1; }
-.dday-label { font-size: 0.68rem; opacity: 0.85; margin-top: 3px; }
+.dday-num { font-size: 1.85rem; font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+.dday-label { font-size: 0.66rem; opacity: 0.78; margin-top: 4px; font-weight: 500; }
 
-/* ── Bottom Nav ── */
-.bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: white; border-top: 1px solid var(--border);
-  display: flex; z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom);
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+/* ── App Layout ── */
+.app-layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 168px; background: #1E1B4B;
+  flex-shrink: 0; position: fixed;
+  top: 0; left: 0; bottom: 0;
+  display: flex; flex-direction: column; z-index: 100;
 }
-.nav-item {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; padding: 10px 0;
-  cursor: pointer; color: var(--text-3);
-  font-size: 0.62rem; gap: 2px;
-  border: none; background: none; position: relative;
+.sidebar-logo {
+  padding: 22px 16px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.nav-item.active { color: var(--primary); }
-.nav-icon { font-size: 1.25rem; }
+.sidebar-logo-icon { font-size: 1.4rem; margin-bottom: 5px; }
+.sidebar-logo-title { font-size: 0.95rem; font-weight: 800; color: #fff; }
+.sidebar-logo-sub { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.sidebar-nav {
+  flex: 1; padding: 10px 8px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 12px; border-radius: 9px;
+  color: rgba(255,255,255,0.6); cursor: pointer;
+  transition: all 0.15s; font-size: 0.83rem; font-weight: 500;
+  background: none; border: none; font-family: inherit;
+  text-align: left; width: 100%; position: relative;
+}
+.sidebar-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.sidebar-item.active { background: var(--primary); color: #fff; }
+.sidebar-item-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+.main-area { margin-left: 168px; flex: 1; min-height: 100vh; }
+
 .nav-badge {
-  position: absolute; top: 6px; right: calc(50% - 16px);
+  position: absolute; top: 6px; right: 8px;
   background: var(--red); color: white;
   border-radius: 99px; font-size: 0.55rem;
   font-weight: 700; padding: 1px 4px; min-width: 14px;
   text-align: center;
+}
+
+/* ── Mobile: icon-only sidebar ── */
+@media (max-width: 560px) {
+  .sidebar { width: 54px; }
+  .sidebar-logo-title, .sidebar-logo-sub, .sidebar-item-label { display: none; }
+  .sidebar-logo { padding: 18px 0; text-align: center; }
+  .sidebar-logo-icon { font-size: 1.3rem; }
+  .sidebar-item { justify-content: center; padding: 11px 0; }
+  .sidebar-item-icon { width: auto; font-size: 1.1rem; }
+  .main-area { margin-left: 54px; }
 }
 
 /* ── Panels ── */
@@ -85,18 +122,18 @@ body {
 .card {
   background: var(--card); border-radius: var(--radius);
   padding: 16px; margin-bottom: 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow);
 }
 .card-title {
-  font-size: 0.72rem; font-weight: 700;
+  font-size: 0.7rem; font-weight: 700;
   color: var(--text-2); text-transform: uppercase;
-  letter-spacing: 0.06em; margin-bottom: 12px;
+  letter-spacing: 0.07em; margin-bottom: 12px;
 }
 
 /* ── Progress ── */
 .progress-wrap { margin-top: 10px; }
 .progress-meta { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.75rem; }
-.progress-bar { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
+.progress-bar { background: var(--border); border-radius: 99px; height: 5px; overflow: hidden; }
 .progress-fill {
   height: 100%; border-radius: 99px;
   background: linear-gradient(90deg, var(--primary), var(--primary-dark));
@@ -104,15 +141,15 @@ body {
 }
 
 /* ── Stats ── */
-.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.stat-box { background: var(--bg); border-radius: 10px; padding: 12px 8px; text-align: center; }
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat-box { background: var(--bg); border-radius: var(--radius-sm); padding: 14px 8px; text-align: center; }
 .stat-num { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
 .stat-label { font-size: 0.63rem; color: var(--text-2); margin-top: 2px; }
 
 /* ── Phase sections (checklist) ── */
 .phase-section {
   border-radius: var(--radius); margin-bottom: 10px;
-  border: 1.5px solid var(--border); overflow: hidden;
+  box-shadow: var(--shadow); overflow: hidden;
   background: white;
 }
 .phase-section-header {
@@ -125,16 +162,14 @@ body {
 .phase-name { font-size: 0.9rem; font-weight: 700; }
 .phase-period { font-size: 0.68rem; color: var(--text-3); margin-top: 1px; }
 .phase-right { display: flex; align-items: center; gap: 8px; }
-.phase-pct { font-size: 0.72rem; font-weight: 700; color: var(--primary); }
 .chevron { font-size: 0.75rem; color: var(--text-3); transition: transform 0.2s; }
 .chevron.open { transform: rotate(180deg); }
-
 .phase-section-body { display: none; padding: 0 16px 12px; border-top: 1px solid var(--border); }
 .phase-section-body.open { display: block; }
 
 /* ── Category ── */
 .cat-title {
-  font-size: 0.72rem; font-weight: 700;
+  font-size: 0.7rem; font-weight: 700;
   color: var(--text-2); padding: 12px 0 6px;
   border-bottom: 1.5px solid var(--primary-light);
   margin-bottom: 2px;
@@ -142,11 +177,12 @@ body {
 
 /* ── Task items ── */
 .task-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 9px 0; border-bottom: 1px solid var(--border);
-  cursor: pointer;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
 }
 .task-item:last-child { border-bottom: none; }
+.task-row {
+  display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+}
 .task-check {
   width: 20px; height: 20px; border-radius: 50%;
   border: 2px solid var(--border); flex-shrink: 0;
@@ -161,11 +197,31 @@ body {
 .task-due.overdue { color: var(--red); font-weight: 700; }
 .task-due.soon { color: var(--orange); font-weight: 700; }
 
+/* ── Guide toggle ── */
+.guide-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 5px; background: var(--primary-light);
+  border: none; border-radius: 6px; padding: 3px 8px;
+  font-size: 0.7rem; font-weight: 600; color: var(--primary);
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.guide-btn:active { background: var(--primary); color: white; }
+.guide-panel {
+  display: none; margin-top: 8px;
+  background: #FAFBFF; border-left: 3px solid var(--primary);
+  border-radius: 0 8px 8px 0; padding: 10px 12px;
+}
+.guide-panel.open { display: block; }
+.guide-panel p {
+  font-size: 0.78rem; line-height: 1.65; color: var(--text);
+  white-space: pre-wrap;
+}
+
 /* ── Add task btn ── */
 .btn-add-task {
   display: flex; align-items: center; gap: 6px;
   background: none; border: 1.5px dashed var(--border);
-  border-radius: 8px; padding: 7px 10px; width: 100%;
+  border-radius: var(--radius-sm); padding: 7px 10px; width: 100%;
   color: var(--text-3); font-size: 0.78rem; cursor: pointer;
   margin-top: 8px; font-family: inherit;
 }
@@ -176,9 +232,12 @@ body {
   justify-content: space-between; margin-bottom: 12px;
 }
 .cal-nav-btn {
-  background: none; border: none; font-size: 1.3rem;
-  cursor: pointer; color: var(--text-2); padding: 4px 10px;
+  background: none; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 1rem;
+  cursor: pointer; color: var(--text-2); padding: 5px 13px;
+  transition: all 0.15s; font-family: inherit;
 }
+.cal-nav-btn:active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
 .cal-month-label { font-size: 1rem; font-weight: 800; }
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
 .cal-dow {
@@ -188,10 +247,10 @@ body {
 .cal-day {
   aspect-ratio: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  border-radius: 8px; font-size: 0.78rem; cursor: pointer;
+  border-radius: 9px; font-size: 0.78rem; cursor: pointer;
   position: relative; transition: background 0.1s;
 }
-.cal-day:active { background: var(--border); }
+.cal-day:active { background: var(--primary-light); }
 .cal-day.today { background: var(--primary); color: white; font-weight: 800; }
 .cal-day.other-month { color: var(--text-3); }
 .cal-day.has-event::after {
@@ -199,50 +258,43 @@ body {
   background: var(--orange); position: absolute; bottom: 3px;
 }
 .cal-day.today.has-event::after { background: white; }
-.cal-day.milestone-day { background: var(--indigo-light); color: var(--indigo); font-weight: 700; }
+.cal-day.milestone-day { background: var(--primary-light); color: var(--primary); font-weight: 700; }
 .cal-day.today.milestone-day { background: var(--primary); color: white; }
-
 .event-list { margin-top: 14px; }
 .event-item {
   display: flex; gap: 10px; align-items: flex-start;
   padding: 10px 0; border-bottom: 1px solid var(--border);
 }
 .event-item:last-child { border-bottom: none; }
-.event-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  flex-shrink: 0; margin-top: 5px;
-}
+.event-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
 .event-name { font-size: 0.85rem; font-weight: 500; }
 .event-date { font-size: 0.68rem; color: var(--text-3); margin-top: 1px; }
 
-/* ── Milestones (home) ── */
+/* ── Milestones ── */
 .milestone-item {
   display: flex; gap: 12px; align-items: flex-start;
   padding: 9px 0; border-bottom: 1px solid var(--border);
 }
 .milestone-item:last-child { border-bottom: none; }
-.ms-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--primary); flex-shrink: 0; margin-top: 4px;
-}
+.ms-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 4px; }
 .ms-dot.past { background: var(--text-3); }
 .ms-dot.soon { background: var(--orange); }
 .ms-date { font-size: 0.68rem; color: var(--text-3); }
 .ms-text { font-size: 0.85rem; font-weight: 600; }
 
-/* ── Toggle ── */
+/* ── Toggle (애플 스타일) ── */
 .toggle {
-  width: 44px; height: 24px; background: var(--border);
-  border-radius: 12px; position: relative;
-  cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+  width: 46px; height: 27px; background: var(--border);
+  border-radius: 14px; position: relative;
+  cursor: pointer; transition: background 0.25s; flex-shrink: 0;
 }
 .toggle.on { background: var(--primary); }
 .toggle::after {
-  content: ''; width: 18px; height: 18px; background: white;
+  content: ''; width: 21px; height: 21px; background: white;
   border-radius: 50%; position: absolute; top: 3px; left: 3px;
-  transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: left 0.22s; box-shadow: 0 2px 4px rgba(0,0,0,0.22);
 }
-.toggle.on::after { left: 23px; }
+.toggle.on::after { left: 22px; }
 
 /* ── Settings rows ── */
 .setting-row {
@@ -254,46 +306,44 @@ body {
 .setting-label { font-size: 0.875rem; font-weight: 500; }
 .setting-desc { font-size: 0.72rem; color: var(--text-3); margin-top: 2px; }
 
-/* ── Modal ── */
+/* ── Modal (Apple 중앙 시트) ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.45); z-index: 200;
-  align-items: flex-end; justify-content: center;
+  background: rgba(0,0,0,0.48); z-index: 200;
+  align-items: center; justify-content: center;
+  padding: 20px;
 }
 .modal-overlay.show { display: flex; }
 .modal {
-  background: white; border-radius: 20px 20px 0 0;
-  padding: 20px; width: 100%; max-height: 85vh; overflow-y: auto;
+  background: white; border-radius: 20px;
+  padding: 20px; width: 100%; max-width: 460px;
+  max-height: 88vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
 }
 .modal-title { font-size: 1rem; font-weight: 800; margin-bottom: 16px; }
 .form-group { margin-bottom: 14px; }
 .form-label { font-size: 0.78rem; font-weight: 600; color: var(--text-2); margin-bottom: 5px; display: block; }
 .form-input, .form-select {
   width: 100%; border: 1.5px solid var(--border);
-  border-radius: 9px; padding: 10px 12px;
+  border-radius: var(--radius-sm); padding: 10px 12px;
   font-size: 0.9rem; font-family: inherit; outline: none;
-  background: white;
+  background: white; transition: border-color 0.15s;
 }
 .form-input:focus, .form-select:focus { border-color: var(--primary); }
 .btn-row { display: flex; gap: 8px; }
 .btn {
-  flex: 1; padding: 13px; border-radius: 10px;
+  flex: 1; padding: 13px; border-radius: var(--radius-sm);
   font-size: 0.9rem; font-weight: 700; border: none; cursor: pointer;
-  font-family: inherit;
+  font-family: inherit; transition: all 0.15s;
 }
 .btn-primary { background: var(--primary); color: white; }
+.btn-primary:active { background: var(--primary-dark); }
 .btn-cancel { background: var(--bg); color: var(--text-2); }
-
-/* ── Phase color bands ── */
-.phase-tag {
-  display: inline-block; font-size: 0.65rem; font-weight: 700;
-  padding: 2px 7px; border-radius: 99px; margin-left: 6px;
-}
 
 /* ── Section header ── */
 .section-header {
-  font-size: 0.78rem; font-weight: 700; color: var(--text-2);
-  margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.05em;
+  font-size: 0.7rem; font-weight: 700; color: var(--text-2);
+  margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.07em;
 }
 
 /* ── Upcoming task card ── */
@@ -303,12 +353,41 @@ body {
 }
 .upcoming-task:last-child { border-bottom: none; }
 .upcoming-name { font-size: 0.83rem; font-weight: 500; flex: 1; padding-right: 8px; }
-.upcoming-due { font-size: 0.68rem; color: var(--text-3); }
+.upcoming-due { font-size: 0.68rem; color: var(--text-3); white-space: nowrap; }
 .upcoming-due.soon { color: var(--orange); font-weight: 700; }
 .upcoming-due.overdue { color: var(--red); font-weight: 700; }
 </style>
 </head>
 <body>
+
+<div class="app-layout">
+
+<!-- ══ Sidebar ══ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🏝️</div>
+    <div class="sidebar-logo-title">제주이주</div>
+    <div class="sidebar-logo-sub">2년 프로젝트</div>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="sidebar-item active" onclick="showPanel('home')" id="nav-home">
+      <span class="sidebar-item-icon">🏠</span><span class="sidebar-item-label">홈</span>
+    </button>
+    <button class="sidebar-item" onclick="showPanel('checklist')" id="nav-checklist">
+      <span class="sidebar-item-icon">✅</span><span class="sidebar-item-label">체크리스트</span>
+    </button>
+    <button class="sidebar-item" onclick="showPanel('calendar')" id="nav-calendar">
+      <span class="sidebar-item-icon">📅</span><span class="sidebar-item-label">캘린더</span>
+    </button>
+    <button class="sidebar-item" onclick="showPanel('settings')" id="nav-settings">
+      <span class="sidebar-item-icon">⚙️</span><span class="sidebar-item-label">설정</span>
+      <span class="nav-badge" id="alert-badge" style="display:none"></span>
+    </button>
+  </nav>
+</aside>
+
+<!-- ══ Main Area ══ -->
+<div class="main-area">
 
 <div class="header" id="main-header">
   <div class="header-label">🏝️ JEJU MOVE PROJECT</div>
@@ -324,27 +403,10 @@ body {
     </div>
     <div class="dday-box">
       <div class="dday-num" id="dday-done">0</div>
-      <div class="dday-label">완료한 항목</div>
+      <div class="dday-label">완료 항목</div>
     </div>
   </div>
 </div>
-
-<!-- Bottom Nav -->
-<nav class="bottom-nav">
-  <button class="nav-item active" onclick="showPanel('home')" id="nav-home">
-    <span class="nav-icon">🏠</span><span>홈</span>
-  </button>
-  <button class="nav-item" onclick="showPanel('checklist')" id="nav-checklist">
-    <span class="nav-icon">✅</span><span>체크리스트</span>
-  </button>
-  <button class="nav-item" onclick="showPanel('calendar')" id="nav-calendar">
-    <span class="nav-icon">📅</span><span>캘린더</span>
-  </button>
-  <button class="nav-item" onclick="showPanel('settings')" id="nav-settings">
-    <span class="nav-icon">🔔</span><span>알림·설정</span>
-    <span class="nav-badge" id="alert-badge" style="display:none"></span>
-  </button>
-</nav>
 
 <!-- ══════════ HOME ══════════ -->
 <div class="panel active" id="panel-home">
@@ -366,7 +428,7 @@ body {
 <div class="panel" id="panel-checklist">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <div style="font-size:0.85rem;font-weight:700;color:var(--text-2)" id="checklist-filter-label">전체 보기</div>
-    <button onclick="openAddTaskModal()" style="background:var(--primary);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit">+ 항목 추가</button>
+    <button onclick="openAddTaskModal()" style="background:var(--primary);color:white;border:none;border-radius:var(--radius-sm);padding:7px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit">+ 항목 추가</button>
   </div>
   <div id="phase-list"></div>
 </div>
@@ -393,7 +455,7 @@ body {
     <div class="card-title">📍 프로젝트 설정</div>
     <div class="setting-row">
       <div><div class="setting-label">제주 출발 예정일</div><div class="setting-desc" id="depart-display">-</div></div>
-      <button onclick="editDepartDate()" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit">수정</button>
+      <button onclick="editDepartDate()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit;color:var(--text-2)">수정</button>
     </div>
     <div class="setting-row">
       <div><div class="setting-label">프로젝트 시작일</div><div class="setting-desc">2026년 7월 12일</div></div>
@@ -421,7 +483,7 @@ body {
         <div class="setting-label">브라우저 알림 허용</div>
         <div class="setting-desc" id="notif-perm-desc">권한 상태 확인 중...</div>
       </div>
-      <button onclick="requestNotifPerm()" id="notif-perm-btn" style="background:var(--primary);color:white;border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit">허용</button>
+      <button onclick="requestNotifPerm()" id="notif-perm-btn" style="background:var(--primary);color:white;border:none;border-radius:var(--radius-sm);padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit">허용</button>
     </div>
   </div>
 
@@ -430,18 +492,21 @@ body {
     <div class="stats-row" id="total-stats"></div>
   </div>
 
-  <div class="card" style="margin-top:4px">
+  <div class="card">
     <div class="card-title">⚙️ 데이터</div>
     <div class="setting-row">
       <div><div class="setting-label">데이터 내보내기</div><div class="setting-desc">JSON 파일로 저장</div></div>
-      <button onclick="exportData()" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit">내보내기</button>
+      <button onclick="exportData()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit;color:var(--text-2)">내보내기</button>
     </div>
     <div class="setting-row">
       <div><div class="setting-label">데이터 초기화</div><div class="setting-desc">모든 체크 항목 초기화</div></div>
-      <button onclick="resetData()" style="background:var(--red-light);border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;color:var(--red);font-family:inherit">초기화</button>
+      <button onclick="resetData()" style="background:var(--red-light);border:none;border-radius:var(--radius-sm);padding:6px 12px;font-size:0.78rem;cursor:pointer;color:var(--red);font-family:inherit">초기화</button>
     </div>
   </div>
 </div>
+
+</div><!-- /main-area -->
+</div><!-- /app-layout -->
 
 <!-- ══════════ MODAL: Add Task ══════════ -->
 <div class="modal-overlay" id="modal-add-task">
@@ -449,7 +514,7 @@ body {
     <div class="modal-title">항목 추가</div>
     <div class="form-group">
       <label class="form-label">단계 선택</label>
-      <select class="form-select" id="add-task-phase"></select>
+      <select class="form-select" id="add-task-phase" onchange="updateCatSelect()"></select>
     </div>
     <div class="form-group">
       <label class="form-label">카테고리</label>
@@ -495,24 +560,32 @@ const DEFAULT_PHASES = [
     id: 'phase1', emoji: '🏗️',
     name: '기반 구축', period: '2026.07 – 2026.09',
     start: '2026-07-01', end: '2026-09-30',
-    color: '#10B981',
+    color: '#6C63FF',
     categories: [
       {
         id: 'finance', name: '💰 재무·수익 구조',
         tasks: [
-          { id: 'p1c1t1', text: '신규 트레이너 급여 구조 확정 (센터 60% / 트레이너 40%)', done: false, due: '2026-08-15' },
-          { id: 'p1c1t2', text: '월 고정 지출 항목 전체 정리 (월세·관리비·급여 등)', done: false, due: '2026-08-15' },
-          { id: 'p1c1t3', text: '제주 이후 목표 매출 1,800만 유지 시뮬레이션 작성', done: false, due: '2026-09-01' },
-          { id: 'p1c1t4', text: '신규 트레이너 2명 추가 시 손익분기점 확인', done: false, due: '2026-09-01' },
+          { id: 'p1c1t1', text: '신규 트레이너 급여 구조 확정 (센터 60% / 트레이너 40%)', done: false, due: '2026-08-15',
+            guide: '① 현재 오빠가 직접 받는 PT 단가 기준으로 "센터 몫 60% / 트레이너 몫 40%" 요율표를 엑셀로 작성한다.\n② 월 최저 보장 수익(실장 기준 200만~250만 목표)이 나오는지 시뮬레이션한다.\n③ 트레이너가 월 몇 세션을 해야 생계가 가능한지 역산해서 "최소 세션 수 기준"도 함께 문서화한다.\n④ 확정된 구조를 세무사에게 공유해 세금·4대보험 처리 방식도 맞춰 둔다.' },
+          { id: 'p1c1t2', text: '월 고정 지출 항목 전체 정리 (월세·관리비·급여 등)', done: false, due: '2026-08-15',
+            guide: '① 통장 내역 3개월치를 펼쳐 놓고 매달 빠짐없이 나가는 항목을 모두 나열한다.\n② 월세, 관리비, 전기·수도, 기기 리스, 소모품, 기존 직원 급여, 세금을 항목별로 정확한 금액으로 표에 기입한다.\n③ "신규 트레이너 2명 채용 후 추가되는 고정비"도 별도 행으로 추가해 비교한다.\n④ 합산 후 현재 매출 1,800만 대비 마진이 얼마인지 한눈에 보이게 정리하면 완료.' },
+          { id: 'p1c1t3', text: '제주 이후 목표 매출 1,800만 유지 시뮬레이션 작성', done: false, due: '2026-09-01',
+            guide: '① 오빠 빠진 후 실장+파트가 소화 가능한 최대 세션 수를 현실적으로 추정한다 (하루 8세션 × 주 5일 × 4주 = 약 160세션).\n② 세션 단가 × 예상 세션 수 = 예상 매출 공식으로 낙관·현실·보수 3가지 시나리오를 작성한다.\n③ 현실 시나리오 기준 순이익이 지금의 몇 %인지 확인하고, 부족분을 어떻게 메울지(콘텐츠 수익, 단가 인상 등) 방향을 적어 둔다.' },
+          { id: 'p1c1t4', text: '신규 트레이너 2명 추가 시 손익분기점 확인', done: false, due: '2026-09-01',
+            guide: '① 신규 트레이너 2명의 예상 월 급여 합산액을 고정비에 추가한다.\n② 추가된 고정비를 커버하려면 두 트레이너가 합쳐서 월 최소 몇 세션을 채워야 하는지 계산한다.\n③ 손익분기 세션 수가 현실적으로 달성 가능한 숫자인지 체크한다. 불가능하다면 채용 시점을 늦추거나 단가 조정이 필요하다는 신호다.' },
         ]
       },
       {
         id: 'hiring-prep', name: '📋 채용 준비',
         tasks: [
-          { id: 'p1c2t1', text: '신규 실장 채용 조건 최종 확정 (트러블 처리·리더십 필수)', done: false, due: '2026-08-01' },
-          { id: 'p1c2t2', text: '채용 공고 문구 작성', done: false, due: '2026-08-15' },
-          { id: 'p1c2t3', text: '채용 플랫폼 결정 및 공고 게시', done: false, due: '2026-09-01' },
-          { id: 'p1c2t4', text: '파트/프리랜서 트레이너 채용 조건 확정', done: false, due: '2026-09-01' },
+          { id: 'p1c2t1', text: '신규 실장 채용 조건 최종 확정 (트러블 처리·리더십 필수)', done: false, due: '2026-08-01',
+            guide: '① 필수 조건(MUST): 트레이너 경력 3년 이상 / 회원 트러블 독자 처리 경험 / 직원 관리 경험 또는 의지.\n② 제외 조건(RED FLAG): 시키는 것만 하는 스타일 / 문제 생기면 오너에게 즉시 떠넘기는 스타일.\n③ 우대 조건(NICE): 블로그·SNS 운영 경험 / 재등록률 높은 이력 / 본인 회원 보유.\n④ 이 기준을 A4 1장으로 정리해 면접 체크리스트로 만들어 두면 흔들리지 않는다.' },
+          { id: 'p1c2t2', text: '채용 공고 문구 작성', done: false, due: '2026-08-15',
+            guide: '① 센터 소개 → 찾는 사람 → 하는 일 → 대우 순으로 구성한다.\n② "시키는 것만 하는 분 지원 불가" 같은 직접적인 표현보다 "자율적으로 판단하고 문제를 해결하는 분"처럼 긍정 표현으로 바꾼다.\n③ 급여는 "협의" 대신 범위(예: 250만~350만)를 공개하면 불필요한 지원자를 걸러낸다.\n④ 채용 플랫폼별(사람인·잡플래닛·헬스인플) 규격에 맞춰 버전을 조금씩 다르게 작성한다.' },
+          { id: 'p1c2t3', text: '채용 플랫폼 결정 및 공고 게시', done: false, due: '2026-09-01',
+            guide: '① 피트니스 트레이너 채용에 효과적인 채널: 사람인(대중), 잡플래닛(후기 신뢰), 헬스인플(업계 특화), 인스타 채용공고(SNS 운영 능력 보는 데 좋음).\n② 2~3곳에 동시 게시하고 플랫폼별 반응률을 비교한다.\n③ 게시 후 1주일 내 지원자가 5명 미만이면 제목·급여 표기 방식을 수정한다.\n④ 지원자 관리는 구글 시트 하나로 이름·연락처·면접 일정·결과를 정리한다.' },
+          { id: 'p1c2t4', text: '파트/프리랜서 트레이너 채용 조건 확정', done: false, due: '2026-09-01',
+            guide: '① 파트는 시간제 정직원, 프리랜서는 세션별 수수료로 구분한다. 어느 형태로 뽑을지 먼저 결정한다.\n② 파트 기준: 주 3~4일 근무, 시간당 고정 급여 또는 세션 커미션.\n③ 프리랜서 기준: 본인 회원 보유 가능 여부, 시설 사용료 협의, 최소 보장 세션 수 협의.\n④ 실장보다 나중에 채용하는 게 맞다. 실장 성향에 맞는 파트를 같이 고르는 편이 팀 케미가 좋다.' },
         ]
       }
     ]
@@ -521,30 +594,39 @@ const DEFAULT_PHASES = [
     id: 'phase2', emoji: '👥',
     name: '채용·온보딩', period: '2026.10 – 2027.01',
     start: '2026-10-01', end: '2027-01-31',
-    color: '#6366F1',
+    color: '#FF6B35',
     categories: [
       {
         id: 'hiring', name: '🤝 실장 채용',
         tasks: [
-          { id: 'p2c1t1', text: '실장 후보 면접 진행', done: false, due: '2026-10-31' },
-          { id: 'p2c1t2', text: '실장 최종 채용 결정 및 계약', done: false, due: '2026-11-15' },
-          { id: 'p2c1t3', text: '실장 입사 및 온보딩 시작', done: false, due: '2026-12-01' },
+          { id: 'p2c1t1', text: '실장 후보 면접 진행', done: false, due: '2026-10-31',
+            guide: '① 1차 서류: 경력·이직 이유·현재 담당 회원 수 확인. 이직 이유가 "돈" 하나뿐이면 주의.\n② 2차 실무 면접: 실제 트러블 상황을 주고 어떻게 대처했는지 STAR 방식으로 묻는다 (예: "재등록 거부하는 회원 어떻게 설득했나요?").\n③ 핵심 질문: "오너 없이 혼자 센터 운영해야 한다면 가장 먼저 할 일이 뭔가요?" → 이 답변으로 주도성을 본다.\n④ 마지막에 6개월 밀착 이식 트레이닝 과정을 솔직하게 설명하고 동의 여부를 확인한다.' },
+          { id: 'p2c1t2', text: '실장 최종 채용 결정 및 계약', done: false, due: '2026-11-15',
+            guide: '① 최종 후보가 여러 명이면 "6개월 후 혼자 돌렸을 때 가장 믿음직한 사람"을 기준으로 고른다.\n② 근로계약서에 업무 범위, 권한 이양 일정, 제주 이주 후 원격 운영 사실을 명기한다 (나중에 분쟁 방지).\n③ 수습 3개월 조항을 넣어 양방향 검증 기간을 만들어 두는 게 안전하다.\n④ 급여 외에 인센티브 구조(재등록률 목표 달성 시 보너스)도 계약서에 넣으면 동기부여가 된다.' },
+          { id: 'p2c1t3', text: '실장 입사 및 온보딩 시작', done: false, due: '2026-12-01',
+            guide: '① 입사 첫 주: 센터 동선·기기·예약 시스템 완전 숙지. 기존 회원 얼굴·이름·특이사항 파악.\n② 2주차부터: 오빠와 함께 상담 동행 시작. 오빠가 하는 것을 실장이 보고 따라 한다.\n③ 첫 달 목표: "회원들이 실장 얼굴을 익히고 자연스럽게 대화할 수 있는 상태".\n④ 온보딩 체크리스트(기기 사용법, 시스템 로그인, 회원별 특이사항 등)를 문서로 만들어서 진행한다.' },
         ]
       },
       {
         id: 'part-hiring', name: '🧑‍🏫 파트·프리랜서',
         tasks: [
-          { id: 'p2c2t1', text: '파트/프리랜서 트레이너 면접·채용', done: false, due: '2026-11-30' },
-          { id: 'p2c2t2', text: '파트 온보딩 시작', done: false, due: '2026-12-15' },
+          { id: 'p2c2t1', text: '파트/프리랜서 트레이너 면접·채용', done: false, due: '2026-11-30',
+            guide: '① 실장이 안정된 이후 채용한다. 실장이 팀 케미를 보고 의견을 낼 수 있도록 면접에 동석시킨다.\n② 파트는 시간 충돌 없이 고정 타임대를 채울 수 있는 사람이 최우선이다.\n③ 프리랜서라면 "본인 회원을 데려오는 조건"도 협의해볼 수 있다 (센터 입장에선 회원 수 자동 증가).\n④ 수습 1개월 내 오빠·실장 모두 OK해야 정식 계약으로 넘어간다.' },
+          { id: 'p2c2t2', text: '파트 온보딩 시작', done: false, due: '2026-12-15',
+            guide: '① 파트는 실장이 온보딩을 주도하도록 한다. 실장의 리더십 연습 기회가 된다.\n② 파트 전용 업무 범위(어떤 세션을 담당하는지, 신규 상담은 하는지)를 명확히 정해 준다.\n③ 오빠는 파트 온보딩에 너무 깊이 개입하지 않는다. 실장이 팀을 이끄는 감각을 키워야 한다.' },
         ]
       },
       {
         id: 'onboard', name: '📚 이식 트레이닝 1-2개월차',
         tasks: [
-          { id: 'p2c3t1', text: '오빠와 실장 함께 상담·수업 동행 시작', done: false, due: '2026-12-01' },
-          { id: 'p2c3t2', text: '하이무브 스타일·철학 문서화 (트레이너 가이드북)', done: false, due: '2027-01-15' },
-          { id: 'p2c3t3', text: '하이무브 분위기·문화 요소 정리 (실장에게 전달)', done: false, due: '2027-01-15' },
-          { id: 'p2c3t4', text: '신규 상담 스크립트·프로세스 문서화', done: false, due: '2027-01-31' },
+          { id: 'p2c3t1', text: '오빠와 실장 함께 상담·수업 동행 시작', done: false, due: '2026-12-01',
+            guide: '① 오빠가 상담할 때 실장이 옆에 앉아서 전 과정을 관찰한다. 매 상담 후 15분 디브리핑 시간을 갖는다.\n② 수업도 마찬가지 — 오빠 수업을 실장이 보조로 들어가며 큐잉 방식, 피드백 타이밍, 회원 대응 방식을 몸으로 익힌다.\n③ 이 단계의 목표: 오빠 스타일을 "복사"하는 것이 아니라 "원리를 이해"하는 것.' },
+          { id: 'p2c3t2', text: '하이무브 스타일·철학 문서화 (트레이너 가이드북)', done: false, due: '2027-01-15',
+            guide: '① 하이무브만의 수업 방식, 회원 대응 톤, 재등록 멘트, 강조하는 운동 가치관을 A4 10~20장 분량으로 정리한다.\n② 챕터 구성 예시: 하이무브 운동 철학 / 회원 상담 흐름 / 수업 중 금기사항 / 자주 받는 질문과 답변 / 재등록 유도 스크립트.\n③ 오빠가 말하고 실장이 받아 적는 인터뷰 방식으로 초안을 빠르게 뽑은 다음 다듬는 게 가장 빠르다.' },
+          { id: 'p2c3t3', text: '하이무브 분위기·문화 요소 정리 (실장에게 전달)', done: false, due: '2027-01-15',
+            guide: '① 음악 선곡 취향, 센터 청결 기준, 회원 생일 챙기는 방식, SNS 콘텐츠 톤 같은 "분위기 요소"를 글로 옮긴다.\n② "오빠라면 이 상황에서 어떻게 했을까?"를 실장이 스스로 판단할 수 있는 판단 기준을 공유하는 게 목표다.\n③ 사진·영상 레퍼런스도 함께 첨부하면 문서보다 훨씬 전달이 잘 된다.' },
+          { id: 'p2c3t4', text: '신규 상담 스크립트·프로세스 문서화', done: false, due: '2027-01-31',
+            guide: '① 신규 회원이 처음 문의했을 때부터 등록 완료까지의 전 단계를 플로우차트로 그린다.\n② 각 단계별 멘트(전화 응대, 방문 상담, 등록 설명, 반대 의견 처리, 계약 마무리)를 실제로 쓰는 말 그대로 적는다.\n③ 실장이 이 스크립트로 롤플레이를 3회 이상 연습하고, 오빠가 피드백을 줘서 다듬는다.' },
         ]
       }
     ]
@@ -558,21 +640,31 @@ const DEFAULT_PHASES = [
       {
         id: 'transfer', name: '🔄 이식 트레이닝 3-4개월차',
         tasks: [
-          { id: 'p3c1t1', text: '실장이 직접 상담·트러블 처리 (오빠 피드백만)', done: false, due: '2027-03-01' },
-          { id: 'p3c1t2', text: '권한 이양 범위 문서 작성 및 합의', done: false, due: '2027-03-15' },
-          { id: 'p3c1t3', text: '운영 매뉴얼 최종 완성 (센터 A to Z)', done: false, due: '2027-04-01' },
-          { id: 'p3c1t4', text: '비상 상황 대응 매뉴얼 작성 (환불·분쟁·시설 하자)', done: false, due: '2027-04-01' },
+          { id: 'p3c1t1', text: '실장이 직접 상담·트러블 처리 (오빠 피드백만)', done: false, due: '2027-03-01',
+            guide: '① 오빠는 상담·트러블 현장에서 빠진다. 실장이 혼자 처리한 뒤 오빠에게 보고하는 구조로 전환한다.\n② 오빠의 역할: 처리 후 "잘한 점 / 다음엔 이렇게 하면 더 좋을 점" 피드백만 제공.\n③ 중요한 것: 오빠가 개입하고 싶은 충동을 참아야 한다. 개입하면 실장은 영원히 혼자 못 한다.\n④ 이 단계에서 실장이 어려워하는 상황 유형을 기록해 두면 나중에 매뉴얼에 추가할 수 있다.' },
+          { id: 'p3c1t2', text: '권한 이양 범위 문서 작성 및 합의', done: false, due: '2027-03-15',
+            guide: '① 3단계 권한 구조를 문서로 공식화한다.\n   - 실장 자체 판단: 스케줄 조정, 재등록 협의, 소모품 구매(월 50만 이내)\n   - 보고 후 처리: 신규 회원 등록, 회원 불만 처리, 직원 결근 대체\n   - 오너 승인 필수: 환불, 특별 할인, 직원 징계, 정책 변경\n② 실장과 함께 문서를 검토하고 서명 또는 카톡으로 동의를 남긴다.\n③ 애매한 상황이 생기면 이 문서를 기준으로 판단하도록 한다.' },
+          { id: 'p3c1t3', text: '운영 매뉴얼 최종 완성 (센터 A to Z)', done: false, due: '2027-04-01',
+            guide: '① 목차 예시: 오픈·마감 체크리스트 / 예약 시스템 사용법 / 신규 회원 등록 절차 / 재등록 유도 흐름 / 기기 점검·고장 시 대응 / 직원 관리(지각·결근 시 처리) / 급여·정산 방법 / 긴급 연락망.\n② 실장이 직접 초안을 작성하게 한다. 오빠가 다 쓰면 실장은 "읽는 사람"이 되어 주인의식이 낮아진다.\n③ 완성 후 실장이 매뉴얼만 보고 하루를 운영해 보는 "드라이런"을 한 번 해 본다.' },
+          { id: 'p3c1t4', text: '비상 상황 대응 매뉴얼 작성 (환불·분쟁·시설 하자)', done: false, due: '2027-04-01',
+            guide: '① 케이스별로 정리한다.\n   - 환불 요청: 언제까지 가능한지 기준, 부분 환불 계산 방식, 거절 시 멘트\n   - 회원 분쟁(폭언·성희롱 등): 즉시 오너에게 연락, 이후 대응 절차\n   - 시설 하자(기기 고장, 누수 등): 긴급 수리업체 연락처, 임시 대응 방법\n② 각 케이스마다 "실장이 혼자 처리 가능한 것 vs 오너에게 먼저 연락할 것"을 명확히 구분한다.\n③ 연락처 목록(AS 업체, 건물 관리자, 세무사, 노무사)을 문서 맨 앞에 첨부한다.' },
         ]
       },
       {
         id: 'automation', name: '🤖 원격 운영 시스템',
         tasks: [
-          { id: 'p3c2t1', text: '일일 보고 체계 구축 (실장 → 오너 카톡 루틴)', done: false, due: '2027-02-28' },
-          { id: 'p3c2t2', text: '주간 화상 미팅 요일·시간 고정', done: false, due: '2027-02-28' },
-          { id: 'p3c2t3', text: '바디코디 원격 매출 확인 방법 설정', done: false, due: '2027-03-01' },
-          { id: 'p3c2t4', text: '바디캘린더 원격 세션 모니터링 설정', done: false, due: '2027-03-01' },
-          { id: 'p3c2t5', text: '월 정산·급여 원격 처리 프로세스 확립', done: false, due: '2027-03-31' },
-          { id: 'p3c2t6', text: '콘텐츠 파이프라인 구축 (직원 촬영 → 오너 편집·업로드)', done: false, due: '2027-04-30' },
+          { id: 'p3c2t1', text: '일일 보고 체계 구축 (실장 → 오너 카톡 루틴)', done: false, due: '2027-02-28',
+            guide: '① 매일 저녁 9시, 실장이 카톡으로 일일 보고를 보내는 루틴을 만든다.\n② 보고 양식 예시(5줄 이내로 간단하게):\n   - 오늘 세션: 12건 / 완료: 12\n   - 신규 문의: 1건 (방문 예약 완료)\n   - 특이사항: 기기 1번 삐걱거림 → AS 접수 예정\n   - 내일 일정: 세션 10건, 신규 상담 1건\n③ 처음 한 달은 오빠가 매일 회신해 주는 게 실장 동기부여에 중요하다. 이후 중요 사항만 답하는 방식으로 전환.' },
+          { id: 'p3c2t2', text: '주간 화상 미팅 요일·시간 고정', done: false, due: '2027-02-28',
+            guide: '① 매주 같은 요일, 같은 시간(예: 월요일 오전 10시)에 30~40분 화상 미팅 루틴을 만든다.\n② 미팅 안건 구성: 지난 주 세션·매출 리뷰 → 이번 주 주의사항 → 직원 이슈 → 회원 동향 → 오너 피드백.\n③ 줌 또는 카카오톡 라이브로 진행하고, 간단한 미팅 메모를 공유 문서에 누적해 두면 나중에 확인이 쉽다.\n④ 제주 이주 후에도 이 루틴이 실제로 돌아가는지 2~3개월 테스트해 본다.' },
+          { id: 'p3c2t3', text: '바디코디 원격 매출 확인 방법 설정', done: false, due: '2027-03-01',
+            guide: '① 바디코디 앱에서 오너 계정으로 원격 접속해 일별 매출, 세션 수, 미수금을 확인하는 방법을 숙지한다.\n② 매일 아침 5분, 전날 매출 숫자를 확인하는 루틴을 만든다.\n③ 이상 징후(세션 수 급감, 환불 증가)가 보이면 즉시 실장에게 확인 요청하는 프로세스를 정해 둔다.' },
+          { id: 'p3c2t4', text: '바디캘린더 원격 세션 모니터링 설정', done: false, due: '2027-03-01',
+            guide: '① 바디캘린더 관리자 계정으로 세션 진행 현황, 회원별 출석률, 잔여 PT를 원격으로 모니터링하는 방법을 확인한다.\n② 잔여 PT가 5회 미만인 회원 목록을 실장이 주 1회 공유하도록 루틴화한다.\n③ 제주에서도 실시간으로 당일 스케줄 변경 사항을 알림받을 수 있는지 확인하고, 필요 시 설정을 바꾼다.' },
+          { id: 'p3c2t5', text: '월 정산·급여 원격 처리 프로세스 확립', done: false, due: '2027-03-31',
+            guide: '① 매월 25일, 실장이 세션 수·매출·지출 내역을 구글 시트에 정리해서 오너에게 공유하는 루틴을 만든다.\n② 오너가 시트를 검토하고 급여 이체 지시를 내리는 방식으로 진행한다.\n③ 세무사에게 원격 정산 방식을 미리 공유해 세금 처리에 문제없는지 확인한다.\n④ 비상금(월 운영비의 1달치)을 센터 법인 계좌에 유지해서 오너 이체 지연 시 실장이 운영 가능하게 한다.' },
+          { id: 'p3c2t6', text: '콘텐츠 파이프라인 구축 (직원 촬영 → 오너 편집·업로드)', done: false, due: '2027-04-30',
+            guide: '① 직원이 촬영한 영상·사진을 오너에게 전달하는 방법을 고정한다: 구글 드라이브 공유 폴더 or 카카오톡 채널.\n② 업로드 루틴: 직원이 주 3회 원본 업로드 → 오너가 편집 후 48시간 이내 발행.\n③ 촬영 가이드(어떤 각도, 어떤 운동, 어떤 회원에게 동의받아야 하는지)를 1장짜리 문서로 만들어 직원에게 준다.\n④ 초반 1개월은 오빠가 직접 피드백해서 퀄리티 기준을 맞춘 뒤 자율에 맡긴다.' },
         ]
       }
     ]
@@ -586,26 +678,36 @@ const DEFAULT_PHASES = [
       {
         id: 'remote-test', name: '🔬 원격 운영 테스트',
         tasks: [
-          { id: 'p4c1t1', text: '오빠 없는 날 주 2-3일 테스트 시작', done: false, due: '2027-05-15' },
-          { id: 'p4c1t2', text: '완전 독립 운영 2주 테스트', done: false, due: '2027-06-15' },
-          { id: 'p4c1t3', text: '테스트 중 문제점 파악 및 보완', done: false, due: '2027-06-25' },
-          { id: 'p4c1t4', text: '실장 최종 권한 이양 완료 확인', done: false, due: '2027-06-30' },
+          { id: 'p4c1t1', text: '오빠 없는 날 주 2-3일 테스트 시작', done: false, due: '2027-05-15',
+            guide: '① 오빠가 완전히 센터에 나오지 않는 날을 주 2~3일로 늘린다. 이 날 발생하는 모든 상황을 실장이 처리한다.\n② 오빠는 카카오톡으로 상황을 받아볼 수 있지만, 직접 해결해주지 않는다. 실장이 먼저 처리하고 사후 보고를 받는다.\n③ 테스트 중 생기는 문제를 일지 형태로 기록해 두면 나중에 매뉴얼 보완에 활용할 수 있다.' },
+          { id: 'p4c1t2', text: '완전 독립 운영 2주 테스트', done: false, due: '2027-06-15',
+            guide: '① 오빠가 2주 동안 센터에 완전히 나오지 않는 시뮬레이션을 진행한다.\n② 오빠는 하루 1회 저녁 보고만 받고, 긴급 상황(환불·시설 사고 등)에만 개입한다.\n③ 2주 후 실장과 함께 리뷰 미팅을 갖고 "혼자 하기 힘든 것, 매뉴얼에 빠진 것, 권한이 더 필요한 것"을 솔직하게 정리한다.\n④ 이 테스트 통과가 곧 제주 이주 가능 신호다.' },
+          { id: 'p4c1t3', text: '테스트 중 문제점 파악 및 보완', done: false, due: '2027-06-25',
+            guide: '① 테스트 기간 동안 발생한 모든 이슈를 유형별로 분류한다: 회원 관련 / 직원 관련 / 시스템 관련 / 매출 관련.\n② 각 이슈별로 "예방 방법" 또는 "발생 시 대응 절차"를 매뉴얼에 추가한다.\n③ 실장이 "이건 오빠 없이 못 하겠어요"라고 느끼는 항목이 있다면 그것이 핵심 리스크다. 반드시 해결하고 이주한다.' },
+          { id: 'p4c1t4', text: '실장 최종 권한 이양 완료 확인', done: false, due: '2027-06-30',
+            guide: '① 체크리스트 형태로 확인한다: 신규 상담 혼자 가능 ✓ / 재등록 설득 혼자 가능 ✓ / 직원 관리 가능 ✓ / 매출 보고 가능 ✓ / 긴급 대응 가능 ✓.\n② 실장 본인도 "나 혼자 할 수 있다"는 자신감이 생겼는지 솔직하게 물어본다.\n③ 오너와 실장 모두 OK 사인이 나야 제주 이주를 확정한다. 한 쪽이라도 불안하면 일정을 늦추는 게 맞다.' },
         ]
       },
       {
         id: 'jeju-prep', name: '🏝️ 제주 준비',
         tasks: [
-          { id: 'p4c2t1', text: '제주 거주지 탐색 및 계약', done: false, due: '2027-05-31' },
-          { id: 'p4c2t2', text: '이사 일정 확정', done: false, due: '2027-06-15' },
-          { id: 'p4c2t3', text: '주소 이전 등 행정 처리', done: false, due: '2027-06-30' },
+          { id: 'p4c2t1', text: '제주 거주지 탐색 및 계약', done: false, due: '2027-05-31',
+            guide: '① 제주 이주 커뮤니티(네이버 카페 "제주에서 살아요", 당근마켓 제주 지역)에서 실거주자 후기를 먼저 읽는다.\n② 선호 지역 결정: 제주시(편의시설·공항 가까움) vs 서귀포(자연환경·조용함). 원격 근무 환경이 더 중요하다면 인터넷 속도부터 확인한다.\n③ 단기 렌트(3~6개월)로 먼저 살아보고 장기 계약하는 방식을 추천한다. 실제로 살아봐야 맞는 동네를 안다.\n④ 이주 1~2개월 전에 현지 방문해서 직접 보고 계약한다.' },
+          { id: 'p4c2t2', text: '이사 일정 확정', done: false, due: '2027-06-15',
+            guide: '① 항공편 이사(짐이 적을 경우)와 해운 이사(짐이 많을 경우) 중 선택한다. 해운은 1~2주 소요된다.\n② 이사 업체는 "제주 이사 전문" 업체를 최소 3곳 견적 비교한다.\n③ 제주 도착 후 바로 생활 가능하도록 가구·가전은 현지 구매 또는 렌탈로 최소화하는 게 이사비 절약에 좋다.\n④ 이사 당일부터 2~3일은 정착에만 집중할 수 있게 센터 업무를 실장에게 완전히 위임한다.' },
+          { id: 'p4c2t3', text: '주소 이전 등 행정 처리', done: false, due: '2027-06-30',
+            guide: '① 전입신고는 이사 후 14일 이내 주민센터 방문 또는 정부24 온라인으로 처리한다.\n② 자동차 등록지 변경, 건강보험 주소 변경도 함께 처리한다.\n③ 사업자 등록증의 대표자 주소는 변경하지 않아도 되지만, 세무사에게 이주 사실을 미리 알려 둔다.\n④ 우편물 수령 주소를 센터 주소로 유지할지, 제주 주소로 바꿀지 정리한다.' },
         ]
       },
       {
         id: 'member-notice', name: '📢 회원·센터 마무리',
         tasks: [
-          { id: 'p4c3t1', text: '회원들에게 원격 운영 전환 공지 (긍정적 메시지로)', done: false, due: '2027-06-01' },
-          { id: 'p4c3t2', text: '주요 장기 회원 1:1 안내', done: false, due: '2027-06-15' },
-          { id: 'p4c3t3', text: '블로그·SNS 원격 운영 콘텐츠 예약 발행 (1개월분)', done: false, due: '2027-06-25' },
+          { id: 'p4c3t1', text: '회원들에게 원격 운영 전환 공지 (긍정적 메시지로)', done: false, due: '2027-06-01',
+            guide: '① 공지 타이밍: 이주 4~6주 전. 너무 일찍 하면 불안감, 너무 늦으면 배신감이 생긴다.\n② 메시지 핵심: "떠나는 게 아니라 더 잘 운영하기 위한 선택"임을 강조한다. "새 실장님이 오빠보다 더 꼼꼼하게 챙길 거예요" 식의 긍정적 프레이밍.\n③ 공지 채널: 카카오 채널 공지 + 수업 시간에 직접 안내.\n④ 회원 반응을 실장에게 실시간으로 공유받고 불안해하는 회원은 개별 대응한다.' },
+          { id: 'p4c3t2', text: '주요 장기 회원 1:1 안내', done: false, due: '2027-06-15',
+            guide: '① 3년 이상 다닌 장기 회원, 고액 회원, 오빠와 개인적으로 친한 회원을 먼저 파악한다.\n② 수업 끝나고 짧게 1:1로 이야기한다: "제가 제주로 이주하는데, 000 실장님이 앞으로 담당해드릴 거예요. 이미 몇 달을 같이 준비했고 충분히 믿을 수 있는 분이에요."\n③ 실장을 직접 소개하는 시간을 만들어 준다. 오빠가 실장을 신뢰한다는 것을 회원이 직접 보면 안심한다.' },
+          { id: 'p4c3t3', text: '블로그·SNS 원격 운영 콘텐츠 예약 발행 (1개월분)', done: false, due: '2027-06-25',
+            guide: '① 이주 전 1개월치 포스팅(블로그 12개, 인스타 20개)을 미리 제작해 예약 발행 설정을 완료한다.\n② 콘텐츠 주제: 센터 일상, 트레이너 소개, 운동 팁. "오빠 없이도 잘 돌아간다"는 이미지를 자연스럽게 심어주는 콘텐츠 위주.\n③ 예약 발행 도구: 인스타는 메타 비즈니스 스위트, 블로그는 네이버 예약 발행 기능 활용.' },
         ]
       }
     ]
@@ -614,33 +716,45 @@ const DEFAULT_PHASES = [
     id: 'phase5', emoji: '🌴',
     name: '제주 생활·원격 운영', period: '2027.07 – 2028.06',
     start: '2027-07-01', end: '2028-06-30',
-    color: '#0EA5E9',
+    color: '#10B981',
     categories: [
       {
         id: 'remote-ops', name: '📊 원격 운영 루틴',
         tasks: [
-          { id: 'p5c1t1', text: '매일: 바디코디 당일 매출·세션 확인', done: false, due: '2027-07-07' },
-          { id: 'p5c1t2', text: '매일: 실장 보고 카톡 확인 및 회신', done: false, due: '2027-07-07' },
-          { id: 'p5c1t3', text: '주 1회: 직원 화상 미팅 루틴 안착', done: false, due: '2027-07-31' },
-          { id: 'p5c1t4', text: '월 1회: 급여·정산 원격 처리', done: false, due: '2027-08-01' },
-          { id: 'p5c1t5', text: '분기 1회: 센터 직접 방문 일정 확정', done: false, due: '2027-10-01' },
+          { id: 'p5c1t1', text: '매일: 바디코디 당일 매출·세션 확인', done: false, due: '2027-07-07',
+            guide: '① 아침 기상 후 10분 이내, 바디코디 앱에서 전날 매출·세션 수를 확인하는 것을 아침 루틴으로 만든다.\n② 이상 징후 체크: 평균 대비 20% 이상 세션 감소, 환불 발생, 미수금 증가 → 즉시 실장 확인.\n③ 월 누적 매출 추이를 월별 시트에 직접 기록하면 원격에서도 센터 상태가 감지된다.' },
+          { id: 'p5c1t2', text: '매일: 실장 보고 카톡 확인 및 회신', done: false, due: '2027-07-07',
+            guide: '① 실장 보고는 매일 저녁 9시 전후로 받는다. 24시간 이내 회신을 원칙으로 한다.\n② 단순 확인 사항은 "확인 👍"로 짧게, 판단이 필요한 건은 명확하게 지시한다.\n③ 실장이 "오너가 잘 보고 있다"고 느끼는 것만으로도 주인의식이 유지된다. 가끔 칭찬 메시지도 중요하다.' },
+          { id: 'p5c1t3', text: '주 1회: 직원 화상 미팅 루틴 안착', done: false, due: '2027-07-31',
+            guide: '① 매주 같은 요일·시간에 30분 줌 미팅. 결석 없이 지킨다.\n② 안건은 실장이 미리 구글 문서에 정리해서 보내도록 한다 (미팅 전날까지).\n③ 미팅이 형식적으로 흐르지 않으려면 오너가 매주 한 가지씩 구체적인 피드백 또는 방향을 제시해야 한다.' },
+          { id: 'p5c1t4', text: '월 1회: 급여·정산 원격 처리', done: false, due: '2027-08-01',
+            guide: '① 매월 25~27일, 실장이 세션·매출·지출 시트를 완성해서 공유한다.\n② 오너가 시트 검토 후 28일까지 급여 이체를 완료한다.\n③ 이체 확인은 실장이 카톡으로 알려주도록 루틴화한다.\n④ 매출이 기준치(예: 1,400만 이하)로 내려가면 즉시 원인 분석·대책 논의를 시작한다.' },
+          { id: 'p5c1t5', text: '분기 1회: 센터 직접 방문 일정 확정', done: false, due: '2027-10-01',
+            guide: '① 분기마다 1회, 3~4일 방문해서 현장 점검을 한다.\n② 방문 시 할 일: 회원 직접 만나기 / 기기 상태 점검 / 직원 면담(잘 되는 것, 힘든 것 솔직하게 듣기) / 매뉴얼 업데이트.\n③ 방문 일정은 최소 4주 전에 정해서 실장과 공유한다. 갑자기 오면 실장도 당황한다.\n④ 방문하지 않는 달에도 "모르는 척 원격으로만 보는 것"은 신뢰 관계를 위해 좋지 않다. 관심을 지속적으로 표현한다.' },
         ]
       },
       {
         id: 'marketing', name: '📣 홍보·마케팅',
         tasks: [
-          { id: 'p5c2t1', text: '블로그 주 2-3회 발행 루틴 안착', done: false, due: '2027-08-01' },
-          { id: 'p5c2t2', text: '인스타 주 3-4회 콘텐츠 업로드 루틴 안착', done: false, due: '2027-08-01' },
-          { id: 'p5c2t3', text: '유튜브/릴스 월 4-8개 업로드 루틴 안착', done: false, due: '2027-09-01' },
-          { id: 'p5c2t4', text: '카카오채널 이벤트·재등록 안내 운영', done: false, due: '2027-08-15' },
+          { id: 'p5c2t1', text: '블로그 주 2-3회 발행 루틴 안착', done: false, due: '2027-08-01',
+            guide: '① 제주에서 일·생활을 병행하며 쓸 수 있는 현실적인 주제를 미리 리스트업 해둔다.\n② 블로그 발행 시간은 오전 7~9시 또는 오후 7~9시 사이가 검색 노출에 유리하다.\n③ 제주 이주 후 "제주에서 원격으로 센터를 운영하는 이야기"를 콘텐츠로 만들면 차별화가 된다.' },
+          { id: 'p5c2t2', text: '인스타 주 3-4회 콘텐츠 업로드 루틴 안착', done: false, due: '2027-08-01',
+            guide: '① 직원이 촬영한 센터 콘텐츠 + 오빠가 제주에서 운동하는 콘텐츠를 섞어서 업로드한다.\n② 피드 9칸 구성을 미리 기획해두면 시각적으로 깔끔해 보인다.\n③ 게시물마다 하이무브 해시태그를 고정으로 넣고, 지역 해시태그(#강남PT #하이무브)를 지속 사용한다.' },
+          { id: 'p5c2t3', text: '유튜브/릴스 월 4-8개 업로드 루틴 안착', done: false, due: '2027-09-01',
+            guide: '① 제주에서 직접 촬영하는 콘텐츠(제주 운동 루틴, 원격 창업 이야기)와 센터 콘텐츠를 절반씩 운영한다.\n② 릴스는 15~30초, 유튜브 쇼츠도 60초 이내로 시작해서 부담을 낮춘다.\n③ 댓글 관리는 3일 이내 모두 답변하는 것을 원칙으로 한다. 원격에서도 소통하고 있다는 인상을 준다.' },
+          { id: 'p5c2t4', text: '카카오채널 이벤트·재등록 안내 운영', done: false, due: '2027-08-15',
+            guide: '① 카카오 채널 메시지는 월 1~2회, 재등록 시즌(매달 마지막 주)에 맞춰 보낸다.\n② 메시지 내용: 이번 달 이벤트 안내, 잔여 PT 확인 유도, 신규 등록 혜택.\n③ 발송 전 실장과 내용을 확인하고, 오너가 원격에서 직접 발송하거나 실장에게 위임한다.' },
         ]
       },
       {
         id: 'jeju-life', name: '🏖️ 제주 정착',
         tasks: [
-          { id: 'p5c3t1', text: '제주 생활 루틴 구축 완료', done: false, due: '2027-08-31' },
-          { id: 'p5c3t2', text: '제주에서 온라인 업무 환경 세팅 완료', done: false, due: '2027-07-31' },
-          { id: 'p5c3t3', text: '1년 제주 생활 완주 🎉', done: false, due: '2028-06-30' },
+          { id: 'p5c3t1', text: '제주 생활 루틴 구축 완료', done: false, due: '2027-08-31',
+            guide: '① 오전: 업무 시간(바디코디 확인, 블로그·콘텐츠 작업, 실장 소통)\n② 오후: 자유 시간 또는 운동·야외 활동\n③ 저녁: 실장 보고 확인 + 다음 날 업무 정리\n④ 처음 1~2개월은 루틴이 흔들릴 수 있다. 괜찮다. 3개월 이후부터 안정된다.' },
+          { id: 'p5c3t2', text: '제주에서 온라인 업무 환경 세팅 완료', done: false, due: '2027-07-31',
+            guide: '① 인터넷: 광랜 기가 인터넷 설치 (제주도 내 KT·LG U+ 모두 가능, 입주 전 사전 신청).\n② 장비: 노트북 + 외부 모니터, 노이즈 캔슬링 헤드셋(화상 미팅용), 웹캠.\n③ 화상 회의: 줌 유료 플랜 (40분 제한 없는 버전).\n④ 파일 공유: 구글 드라이브 팀 드라이브 또는 노션으로 실장과 공유 문서 관리.' },
+          { id: 'p5c3t3', text: '1년 제주 생활 완주 🎉', done: false, due: '2028-06-30',
+            guide: '① 1년을 버티는 것이 목표가 아니라, 원하는 삶을 살면서 센터도 잘 돌아가고 있는 상태를 만드는 것이 진짜 목표다.\n② 6개월 시점에 중간 점검: 센터 매출 유지되고 있는지, 실장이 버텨주고 있는지, 제주 생활이 실제로 만족스러운지.\n③ 1년 후 계속 제주에 살지, 돌아갈지, 다른 곳으로 갈지는 그때 가서 결정해도 된다. 일단 1년을 완주하는 것이 먼저다.' },
         ]
       }
     ]
@@ -648,16 +762,16 @@ const DEFAULT_PHASES = [
 ];
 
 const MILESTONES = [
-  { date: '2026-09-01', text: '채용 공고 게시', color: '#10B981' },
-  { date: '2026-11-15', text: '신규 실장 채용 완료', color: '#6366F1' },
-  { date: '2026-12-15', text: '파트 트레이너 채용 완료', color: '#6366F1' },
+  { date: '2026-09-01', text: '채용 공고 게시', color: '#6C63FF' },
+  { date: '2026-11-15', text: '신규 실장 채용 완료', color: '#FF6B35' },
+  { date: '2026-12-15', text: '파트 트레이너 채용 완료', color: '#FF6B35' },
   { date: '2027-01-31', text: '하이무브 가이드북 완성', color: '#F59E0B' },
   { date: '2027-04-01', text: '운영 매뉴얼 완성', color: '#F59E0B' },
   { date: '2027-04-30', text: '콘텐츠 파이프라인 완성', color: '#F59E0B' },
   { date: '2027-06-15', text: '독립 운영 2주 테스트', color: '#EF4444' },
   { date: '2027-06-30', text: '실장 권한 이양 완료', color: '#EF4444' },
-  { date: '2027-07-01', text: '🏝️ 제주 출발!', color: '#10B981' },
-  { date: '2028-06-30', text: '🎉 제주 1년 완주', color: '#0EA5E9' },
+  { date: '2027-07-01', text: '🏝️ 제주 출발!', color: '#6C63FF' },
+  { date: '2028-06-30', text: '🎉 제주 1년 완주', color: '#10B981' },
 ];
 
 // ══════════════════════════════════════════
@@ -718,7 +832,7 @@ function getStats() {
 
 function showPanel(name) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(n => n.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
   document.getElementById('nav-' + name).classList.add('active');
   if (name === 'home') renderHome();
@@ -741,7 +855,6 @@ function renderHome() {
   document.getElementById('dday-pct').textContent = stats.pct + '%';
   document.getElementById('dday-done').textContent = stats.done;
 
-  // Upcoming tasks (due within 30 days, not done)
   const all = getAllTasks();
   const upcoming = all.filter(t => {
     if (t.done || !t.due) return false;
@@ -766,7 +879,6 @@ function renderHome() {
     }).join('');
   }
 
-  // Phase progress
   const ppEl = document.getElementById('phase-progress-list');
   ppEl.innerHTML = STATE.phases.map(ph => {
     const tasks = ph.categories.flatMap(c => c.tasks);
@@ -788,7 +900,6 @@ function renderHome() {
     </div>`;
   }).join('');
 
-  // Milestones
   const msEl = document.getElementById('milestone-list');
   const upcoming_ms = MILESTONES.map(m => {
     const d = Math.ceil((new Date(m.date + 'T00:00:00') - today) / 86400000);
@@ -834,12 +945,17 @@ function renderChecklist() {
             else if (d <= 7) { dueCls = 'soon'; dueLabel += ` (${d}일 후)`; }
           }
         }
-        return `<div class="task-item" onclick="toggleTask('${ph.id}','${cat.id}','${t.id}')">
-          <div class="task-check ${t.done ? 'done' : ''}">${t.done ? '✓' : ''}</div>
-          <div class="task-body">
-            <div class="task-text ${t.done ? 'done' : ''}">${t.text}</div>
-            ${dueLabel ? `<div class="task-due ${dueCls}">📅 ${dueLabel}</div>` : ''}
+        const gid = `guide-${ph.id}-${cat.id}-${t.id}`;
+        return `<div class="task-item">
+          <div class="task-row" onclick="toggleTask('${ph.id}','${cat.id}','${t.id}')">
+            <div class="task-check ${t.done ? 'done' : ''}">${t.done ? '✓' : ''}</div>
+            <div class="task-body">
+              <div class="task-text ${t.done ? 'done' : ''}">${t.text}</div>
+              ${dueLabel ? `<div class="task-due ${dueCls}">📅 ${dueLabel}</div>` : ''}
+            </div>
           </div>
+          ${t.guide ? `<button class="guide-btn" onclick="toggleGuide('${gid}')">💡 어떻게 하나요?</button>
+          <div class="guide-panel" id="${gid}"><p>${t.guide}</p></div>` : ''}
         </div>`;
       }).join('');
 
@@ -878,7 +994,6 @@ function getCurrentPhaseIndex() {
 
 function togglePhaseSection(id) {
   const body = document.getElementById(id);
-  const idx = id.replace('ps','');
   const chv = document.getElementById('chv-' + id);
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
@@ -920,7 +1035,6 @@ function renderCalendar() {
   const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
   document.getElementById('cal-month-label').textContent = `${calYear}년 ${monthNames[calMonth]}`;
 
-  // Collect events for this month
   const allTasks = getAllTasks();
   const eventDays = new Set();
   allTasks.forEach(t => {
@@ -939,7 +1053,6 @@ function renderCalendar() {
   let html = dow.map(d => `<div class="cal-dow">${d}</div>`).join('');
 
   const startDow = firstDay.getDay();
-  // Previous month days
   const prevLast = new Date(calYear, calMonth, 0).getDate();
   for (let i = startDow - 1; i >= 0; i--) {
     html += `<div class="cal-day other-month">${prevLast - i}</div>`;
@@ -957,7 +1070,6 @@ function renderCalendar() {
     html += `<div class="${cls}" onclick="selectCalDate('${dateStr}')">${d}</div>`;
   }
 
-  // Next month fill
   const endDow = lastDay.getDay();
   for (let d = 1; d < 7 - endDow; d++) {
     html += `<div class="cal-day other-month">${d}</div>`;
@@ -976,7 +1088,6 @@ function renderCalEvents(dateStr) {
   const allTasks = getAllTasks();
   const label = document.getElementById('cal-selected-label');
   const list = document.getElementById('cal-event-list');
-
   let events = [];
 
   if (dateStr) {
@@ -1030,7 +1141,6 @@ function changeCalMonth(dir) {
 function renderSettings() {
   const d = new Date(STATE.departDate + 'T00:00:00');
   document.getElementById('depart-display').textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
-
   document.getElementById('toggle-deadline').classList.toggle('on', STATE.notif.deadline);
   document.getElementById('toggle-weekly').classList.toggle('on', STATE.notif.weekly);
 
@@ -1128,7 +1238,7 @@ function checkAlerts() {
   if (alerts.length) {
     badge.textContent = alerts.length;
     badge.style.display = '';
-    if (Notification.permission === 'granted' && alerts.length) {
+    if (Notification.permission === 'granted') {
       new Notification('🏝️ 제주 프로젝트 알림', {
         body: `마감 7일 이내 항목 ${alerts.length}개가 있어요`,
         icon: '/favicon.ico'
@@ -1142,6 +1252,15 @@ function checkAlerts() {
 // ══════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════
+
+function toggleGuide(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open', !isOpen);
+  const btn = el.previousElementSibling;
+  if (btn) btn.textContent = isOpen ? '💡 어떻게 하나요?' : '💡 접기';
+}
 
 function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
