@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🏝️ 제주 이주 프로젝트</title>
+<style>
+:root {
+  --primary: #10B981;
+  --primary-light: #D1FAE5;
+  --primary-dark: #059669;
+  --indigo: #6366F1;
+  --indigo-light: #EEF2FF;
+  --orange: #F59E0B;
+  --orange-light: #FEF3C7;
+  --red: #EF4444;
+  --red-light: #FEE2E2;
+  --sky: #0EA5E9;
+  --sky-light: #E0F2FE;
+  --text: #111827;
+  --text-2: #6B7280;
+  --text-3: #9CA3AF;
+  --bg: #F0FDF4;
+  --card: #FFFFFF;
+  --border: #E5E7EB;
+  --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 72px;
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(135deg, #059669 0%, #10B981 60%, #34D399 100%);
+  padding: 52px 20px 20px;
+  color: white;
+}
+.header-label { font-size: 0.75rem; opacity: 0.8; font-weight: 500; letter-spacing: 0.05em; margin-bottom: 4px; }
+.header-title { font-size: 1.4rem; font-weight: 900; line-height: 1.2; }
+.dday-row {
+  display: flex; gap: 10px; margin-top: 16px;
+}
+.dday-box {
+  flex: 1; background: rgba(255,255,255,0.18); border-radius: 12px;
+  padding: 12px; text-align: center;
+}
+.dday-num { font-size: 2rem; font-weight: 900; line-height: 1; }
+.dday-label { font-size: 0.68rem; opacity: 0.85; margin-top: 3px; }
+
+/* ── Bottom Nav ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: white; border-top: 1px solid var(--border);
+  display: flex; z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; padding: 10px 0;
+  cursor: pointer; color: var(--text-3);
+  font-size: 0.62rem; gap: 2px;
+  border: none; background: none; position: relative;
+}
+.nav-item.active { color: var(--primary); }
+.nav-icon { font-size: 1.25rem; }
+.nav-badge {
+  position: absolute; top: 6px; right: calc(50% - 16px);
+  background: var(--red); color: white;
+  border-radius: 99px; font-size: 0.55rem;
+  font-weight: 700; padding: 1px 4px; min-width: 14px;
+  text-align: center;
+}
+
+/* ── Panels ── */
+.panel { display: none; padding: 16px; }
+.panel.active { display: block; }
+
+/* ── Cards ── */
+.card {
+  background: var(--card); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.card-title {
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--text-2); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 12px;
+}
+
+/* ── Progress ── */
+.progress-wrap { margin-top: 10px; }
+.progress-meta { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.75rem; }
+.progress-bar { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
+.progress-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  transition: width 0.5s ease;
+}
+
+/* ── Stats ── */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat-box { background: var(--bg); border-radius: 10px; padding: 12px 8px; text-align: center; }
+.stat-num { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
+.stat-label { font-size: 0.63rem; color: var(--text-2); margin-top: 2px; }
+
+/* ── Phase sections (checklist) ── */
+.phase-section {
+  border-radius: var(--radius); margin-bottom: 10px;
+  border: 1.5px solid var(--border); overflow: hidden;
+  background: white;
+}
+.phase-section-header {
+  padding: 14px 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.phase-section-header:active { background: var(--bg); }
+.phase-left { display: flex; align-items: center; gap: 10px; }
+.phase-emoji { font-size: 1.2rem; }
+.phase-name { font-size: 0.9rem; font-weight: 700; }
+.phase-period { font-size: 0.68rem; color: var(--text-3); margin-top: 1px; }
+.phase-right { display: flex; align-items: center; gap: 8px; }
+.phase-pct { font-size: 0.72rem; font-weight: 700; color: var(--primary); }
+.chevron { font-size: 0.75rem; color: var(--text-3); transition: transform 0.2s; }
+.chevron.open { transform: rotate(180deg); }
+
+.phase-section-body { display: none; padding: 0 16px 12px; border-top: 1px solid var(--border); }
+.phase-section-body.open { display: block; }
+
+/* ── Category ── */
+.cat-title {
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--text-2); padding: 12px 0 6px;
+  border-bottom: 1.5px solid var(--primary-light);
+  margin-bottom: 2px;
+}
+
+/* ── Task items ── */
+.task-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.task-item:last-child { border-bottom: none; }
+.task-check {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px; transition: all 0.15s; font-size: 0.7rem;
+}
+.task-check.done { background: var(--primary); border-color: var(--primary); color: white; }
+.task-body { flex: 1; }
+.task-text { font-size: 0.85rem; line-height: 1.4; }
+.task-text.done { text-decoration: line-through; color: var(--text-3); }
+.task-due { font-size: 0.65rem; color: var(--text-3); margin-top: 2px; }
+.task-due.overdue { color: var(--red); font-weight: 700; }
+.task-due.soon { color: var(--orange); font-weight: 700; }
+
+/* ── Add task btn ── */
+.btn-add-task {
+  display: flex; align-items: center; gap: 6px;
+  background: none; border: 1.5px dashed var(--border);
+  border-radius: 8px; padding: 7px 10px; width: 100%;
+  color: var(--text-3); font-size: 0.78rem; cursor: pointer;
+  margin-top: 8px; font-family: inherit;
+}
+
+/* ── Calendar ── */
+.cal-nav-row {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 12px;
+}
+.cal-nav-btn {
+  background: none; border: none; font-size: 1.3rem;
+  cursor: pointer; color: var(--text-2); padding: 4px 10px;
+}
+.cal-month-label { font-size: 1rem; font-weight: 800; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-dow {
+  text-align: center; font-size: 0.62rem;
+  font-weight: 700; color: var(--text-3); padding: 4px 0 8px;
+}
+.cal-day {
+  aspect-ratio: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 0.78rem; cursor: pointer;
+  position: relative; transition: background 0.1s;
+}
+.cal-day:active { background: var(--border); }
+.cal-day.today { background: var(--primary); color: white; font-weight: 800; }
+.cal-day.other-month { color: var(--text-3); }
+.cal-day.has-event::after {
+  content: ''; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--orange); position: absolute; bottom: 3px;
+}
+.cal-day.today.has-event::after { background: white; }
+.cal-day.milestone-day { background: var(--indigo-light); color: var(--indigo); font-weight: 700; }
+.cal-day.today.milestone-day { background: var(--primary); color: white; }
+
+.event-list { margin-top: 14px; }
+.event-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.event-item:last-child { border-bottom: none; }
+.event-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 5px;
+}
+.event-name { font-size: 0.85rem; font-weight: 500; }
+.event-date { font-size: 0.68rem; color: var(--text-3); margin-top: 1px; }
+
+/* ── Milestones (home) ── */
+.milestone-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+}
+.milestone-item:last-child { border-bottom: none; }
+.ms-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--primary); flex-shrink: 0; margin-top: 4px;
+}
+.ms-dot.past { background: var(--text-3); }
+.ms-dot.soon { background: var(--orange); }
+.ms-date { font-size: 0.68rem; color: var(--text-3); }
+.ms-text { font-size: 0.85rem; font-weight: 600; }
+
+/* ── Toggle ── */
+.toggle {
+  width: 44px; height: 24px; background: var(--border);
+  border-radius: 12px; position: relative;
+  cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+}
+.toggle.on { background: var(--primary); }
+.toggle::after {
+  content: ''; width: 18px; height: 18px; background: white;
+  border-radius: 50%; position: absolute; top: 3px; left: 3px;
+  transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle.on::after { left: 23px; }
+
+/* ── Settings rows ── */
+.setting-row {
+  display: flex; justify-content: space-between;
+  align-items: center; padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+.setting-row:last-child { border-bottom: none; }
+.setting-label { font-size: 0.875rem; font-weight: 500; }
+.setting-desc { font-size: 0.72rem; color: var(--text-3); margin-top: 2px; }
+
+/* ── Modal ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); z-index: 200;
+  align-items: flex-end; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: white; border-radius: 20px 20px 0 0;
+  padding: 20px; width: 100%; max-height: 85vh; overflow-y: auto;
+}
+.modal-title { font-size: 1rem; font-weight: 800; margin-bottom: 16px; }
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 0.78rem; font-weight: 600; color: var(--text-2); margin-bottom: 5px; display: block; }
+.form-input, .form-select {
+  width: 100%; border: 1.5px solid var(--border);
+  border-radius: 9px; padding: 10px 12px;
+  font-size: 0.9rem; font-family: inherit; outline: none;
+  background: white;
+}
+.form-input:focus, .form-select:focus { border-color: var(--primary); }
+.btn-row { display: flex; gap: 8px; }
+.btn {
+  flex: 1; padding: 13px; border-radius: 10px;
+  font-size: 0.9rem; font-weight: 700; border: none; cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-cancel { background: var(--bg); color: var(--text-2); }
+
+/* ── Phase color bands ── */
+.phase-tag {
+  display: inline-block; font-size: 0.65rem; font-weight: 700;
+  padding: 2px 7px; border-radius: 99px; margin-left: 6px;
+}
+
+/* ── Section header ── */
+.section-header {
+  font-size: 0.78rem; font-weight: 700; color: var(--text-2);
+  margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+/* ── Upcoming task card ── */
+.upcoming-task {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+}
+.upcoming-task:last-child { border-bottom: none; }
+.upcoming-name { font-size: 0.83rem; font-weight: 500; flex: 1; padding-right: 8px; }
+.upcoming-due { font-size: 0.68rem; color: var(--text-3); }
+.upcoming-due.soon { color: var(--orange); font-weight: 700; }
+.upcoming-due.overdue { color: var(--red); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="header" id="main-header">
+  <div class="header-label">🏝️ JEJU MOVE PROJECT</div>
+  <div class="header-title">제주 이주 2년 프로젝트</div>
+  <div class="dday-row">
+    <div class="dday-box">
+      <div class="dday-num" id="dday-depart">-</div>
+      <div class="dday-label">제주 출발까지</div>
+    </div>
+    <div class="dday-box">
+      <div class="dday-num" id="dday-pct">0%</div>
+      <div class="dday-label">전체 진행률</div>
+    </div>
+    <div class="dday-box">
+      <div class="dday-num" id="dday-done">0</div>
+      <div class="dday-label">완료한 항목</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="showPanel('home')" id="nav-home">
+    <span class="nav-icon">🏠</span><span>홈</span>
+  </button>
+  <button class="nav-item" onclick="showPanel('checklist')" id="nav-checklist">
+    <span class="nav-icon">✅</span><span>체크리스트</span>
+  </button>
+  <button class="nav-item" onclick="showPanel('calendar')" id="nav-calendar">
+    <span class="nav-icon">📅</span><span>캘린더</span>
+  </button>
+  <button class="nav-item" onclick="showPanel('settings')" id="nav-settings">
+    <span class="nav-icon">🔔</span><span>알림·설정</span>
+    <span class="nav-badge" id="alert-badge" style="display:none"></span>
+  </button>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="panel active" id="panel-home">
+  <div class="section-header">이번 달 마감 항목</div>
+  <div class="card">
+    <div id="upcoming-list"><div style="text-align:center;color:var(--text-3);padding:12px;font-size:0.85rem">불러오는 중...</div></div>
+  </div>
+
+  <div class="section-header">단계별 진행 현황</div>
+  <div id="phase-progress-list"></div>
+
+  <div class="section-header">주요 마일스톤</div>
+  <div class="card">
+    <div id="milestone-list"></div>
+  </div>
+</div>
+
+<!-- ══════════ CHECKLIST ══════════ -->
+<div class="panel" id="panel-checklist">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="font-size:0.85rem;font-weight:700;color:var(--text-2)" id="checklist-filter-label">전체 보기</div>
+    <button onclick="openAddTaskModal()" style="background:var(--primary);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit">+ 항목 추가</button>
+  </div>
+  <div id="phase-list"></div>
+</div>
+
+<!-- ══════════ CALENDAR ══════════ -->
+<div class="panel" id="panel-calendar">
+  <div class="card">
+    <div class="cal-nav-row">
+      <button class="cal-nav-btn" onclick="changeCalMonth(-1)">‹</button>
+      <div class="cal-month-label" id="cal-month-label"></div>
+      <button class="cal-nav-btn" onclick="changeCalMonth(1)">›</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+  <div class="card">
+    <div class="card-title" id="cal-selected-label">이번 달 일정</div>
+    <div id="cal-event-list"><div style="color:var(--text-3);font-size:0.85rem;text-align:center;padding:10px">일정 없음</div></div>
+  </div>
+</div>
+
+<!-- ══════════ SETTINGS ══════════ -->
+<div class="panel" id="panel-settings">
+  <div class="card">
+    <div class="card-title">📍 프로젝트 설정</div>
+    <div class="setting-row">
+      <div><div class="setting-label">제주 출발 예정일</div><div class="setting-desc" id="depart-display">-</div></div>
+      <button onclick="editDepartDate()" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit">수정</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">프로젝트 시작일</div><div class="setting-desc">2026년 7월 12일</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔔 알림 설정</div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">마감 임박 알림</div>
+        <div class="setting-desc">7일 이내 마감 항목 앱 열 때 알림</div>
+      </div>
+      <div class="toggle on" id="toggle-deadline" onclick="toggleNotif('deadline')"></div>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">주간 체크인 알림</div>
+        <div class="setting-desc">매주 월요일 진행 상황 확인 알림</div>
+      </div>
+      <div class="toggle" id="toggle-weekly" onclick="toggleNotif('weekly')"></div>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">브라우저 알림 허용</div>
+        <div class="setting-desc" id="notif-perm-desc">권한 상태 확인 중...</div>
+      </div>
+      <button onclick="requestNotifPerm()" id="notif-perm-btn" style="background:var(--primary);color:white;border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit">허용</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 전체 현황</div>
+    <div class="stats-row" id="total-stats"></div>
+  </div>
+
+  <div class="card" style="margin-top:4px">
+    <div class="card-title">⚙️ 데이터</div>
+    <div class="setting-row">
+      <div><div class="setting-label">데이터 내보내기</div><div class="setting-desc">JSON 파일로 저장</div></div>
+      <button onclick="exportData()" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;font-family:inherit">내보내기</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">데이터 초기화</div><div class="setting-desc">모든 체크 항목 초기화</div></div>
+      <button onclick="resetData()" style="background:var(--red-light);border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;color:var(--red);font-family:inherit">초기화</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL: Add Task ══════════ -->
+<div class="modal-overlay" id="modal-add-task">
+  <div class="modal">
+    <div class="modal-title">항목 추가</div>
+    <div class="form-group">
+      <label class="form-label">단계 선택</label>
+      <select class="form-select" id="add-task-phase"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">카테고리</label>
+      <select class="form-select" id="add-task-cat"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">할 일 내용</label>
+      <input type="text" class="form-input" id="add-task-text" placeholder="예: 채용 공고 작성">
+    </div>
+    <div class="form-group">
+      <label class="form-label">마감일 (선택)</label>
+      <input type="date" class="form-input" id="add-task-due">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-cancel" onclick="closeModal('modal-add-task')">취소</button>
+      <button class="btn btn-primary" onclick="addTask()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL: Depart Date ══════════ -->
+<div class="modal-overlay" id="modal-depart">
+  <div class="modal">
+    <div class="modal-title">제주 출발 예정일 설정</div>
+    <div class="form-group">
+      <label class="form-label">출발 예정일</label>
+      <input type="date" class="form-input" id="depart-date-input">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-cancel" onclick="closeModal('modal-depart')">취소</button>
+      <button class="btn btn-primary" onclick="saveDepartDate()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════
+
+const DEFAULT_PHASES = [
+  {
+    id: 'phase1', emoji: '🏗️',
+    name: '기반 구축', period: '2026.07 – 2026.09',
+    start: '2026-07-01', end: '2026-09-30',
+    color: '#10B981',
+    categories: [
+      {
+        id: 'finance', name: '💰 재무·수익 구조',
+        tasks: [
+          { id: 'p1c1t1', text: '신규 트레이너 급여 구조 확정 (센터 60% / 트레이너 40%)', done: false, due: '2026-08-15' },
+          { id: 'p1c1t2', text: '월 고정 지출 항목 전체 정리 (월세·관리비·급여 등)', done: false, due: '2026-08-15' },
+          { id: 'p1c1t3', text: '제주 이후 목표 매출 1,800만 유지 시뮬레이션 작성', done: false, due: '2026-09-01' },
+          { id: 'p1c1t4', text: '신규 트레이너 2명 추가 시 손익분기점 확인', done: false, due: '2026-09-01' },
+        ]
+      },
+      {
+        id: 'hiring-prep', name: '📋 채용 준비',
+        tasks: [
+          { id: 'p1c2t1', text: '신규 실장 채용 조건 최종 확정 (트러블 처리·리더십 필수)', done: false, due: '2026-08-01' },
+          { id: 'p1c2t2', text: '채용 공고 문구 작성', done: false, due: '2026-08-15' },
+          { id: 'p1c2t3', text: '채용 플랫폼 결정 및 공고 게시', done: false, due: '2026-09-01' },
+          { id: 'p1c2t4', text: '파트/프리랜서 트레이너 채용 조건 확정', done: false, due: '2026-09-01' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'phase2', emoji: '👥',
+    name: '채용·온보딩', period: '2026.10 – 2027.01',
+    start: '2026-10-01', end: '2027-01-31',
+    color: '#6366F1',
+    categories: [
+      {
+        id: 'hiring', name: '🤝 실장 채용',
+        tasks: [
+          { id: 'p2c1t1', text: '실장 후보 면접 진행', done: false, due: '2026-10-31' },
+          { id: 'p2c1t2', text: '실장 최종 채용 결정 및 계약', done: false, due: '2026-11-15' },
+          { id: 'p2c1t3', text: '실장 입사 및 온보딩 시작', done: false, due: '2026-12-01' },
+        ]
+      },
+      {
+        id: 'part-hiring', name: '🧑‍🏫 파트·프리랜서',
+        tasks: [
+          { id: 'p2c2t1', text: '파트/프리랜서 트레이너 면접·채용', done: false, due: '2026-11-30' },
+          { id: 'p2c2t2', text: '파트 온보딩 시작', done: false, due: '2026-12-15' },
+        ]
+      },
+      {
+        id: 'onboard', name: '📚 이식 트레이닝 1-2개월차',
+        tasks: [
+          { id: 'p2c3t1', text: '오빠와 실장 함께 상담·수업 동행 시작', done: false, due: '2026-12-01' },
+          { id: 'p2c3t2', text: '하이무브 스타일·철학 문서화 (트레이너 가이드북)', done: false, due: '2027-01-15' },
+          { id: 'p2c3t3', text: '하이무브 분위기·문화 요소 정리 (실장에게 전달)', done: false, due: '2027-01-15' },
+          { id: 'p2c3t4', text: '신규 상담 스크립트·프로세스 문서화', done: false, due: '2027-01-31' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'phase3', emoji: '⚙️',
+    name: '이식·시스템 구축', period: '2027.02 – 2027.04',
+    start: '2027-02-01', end: '2027-04-30',
+    color: '#F59E0B',
+    categories: [
+      {
+        id: 'transfer', name: '🔄 이식 트레이닝 3-4개월차',
+        tasks: [
+          { id: 'p3c1t1', text: '실장이 직접 상담·트러블 처리 (오빠 피드백만)', done: false, due: '2027-03-01' },
+          { id: 'p3c1t2', text: '권한 이양 범위 문서 작성 및 합의', done: false, due: '2027-03-15' },
+          { id: 'p3c1t3', text: '운영 매뉴얼 최종 완성 (센터 A to Z)', done: false, due: '2027-04-01' },
+          { id: 'p3c1t4', text: '비상 상황 대응 매뉴얼 작성 (환불·분쟁·시설 하자)', done: false, due: '2027-04-01' },
+        ]
+      },
+      {
+        id: 'automation', name: '🤖 원격 운영 시스템',
+        tasks: [
+          { id: 'p3c2t1', text: '일일 보고 체계 구축 (실장 → 오너 카톡 루틴)', done: false, due: '2027-02-28' },
+          { id: 'p3c2t2', text: '주간 화상 미팅 요일·시간 고정', done: false, due: '2027-02-28' },
+          { id: 'p3c2t3', text: '바디코디 원격 매출 확인 방법 설정', done: false, due: '2027-03-01' },
+          { id: 'p3c2t4', text: '바디캘린더 원격 세션 모니터링 설정', done: false, due: '2027-03-01' },
+          { id: 'p3c2t5', text: '월 정산·급여 원격 처리 프로세스 확립', done: false, due: '2027-03-31' },
+          { id: 'p3c2t6', text: '콘텐츠 파이프라인 구축 (직원 촬영 → 오너 편집·업로드)', done: false, due: '2027-04-30' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'phase4', emoji: '🚀',
+    name: '최종 준비·테스트', period: '2027.05 – 2027.06',
+    start: '2027-05-01', end: '2027-06-30',
+    color: '#EF4444',
+    categories: [
+      {
+        id: 'remote-test', name: '🔬 원격 운영 테스트',
+        tasks: [
+          { id: 'p4c1t1', text: '오빠 없는 날 주 2-3일 테스트 시작', done: false, due: '2027-05-15' },
+          { id: 'p4c1t2', text: '완전 독립 운영 2주 테스트', done: false, due: '2027-06-15' },
+          { id: 'p4c1t3', text: '테스트 중 문제점 파악 및 보완', done: false, due: '2027-06-25' },
+          { id: 'p4c1t4', text: '실장 최종 권한 이양 완료 확인', done: false, due: '2027-06-30' },
+        ]
+      },
+      {
+        id: 'jeju-prep', name: '🏝️ 제주 준비',
+        tasks: [
+          { id: 'p4c2t1', text: '제주 거주지 탐색 및 계약', done: false, due: '2027-05-31' },
+          { id: 'p4c2t2', text: '이사 일정 확정', done: false, due: '2027-06-15' },
+          { id: 'p4c2t3', text: '주소 이전 등 행정 처리', done: false, due: '2027-06-30' },
+        ]
+      },
+      {
+        id: 'member-notice', name: '📢 회원·센터 마무리',
+        tasks: [
+          { id: 'p4c3t1', text: '회원들에게 원격 운영 전환 공지 (긍정적 메시지로)', done: false, due: '2027-06-01' },
+          { id: 'p4c3t2', text: '주요 장기 회원 1:1 안내', done: false, due: '2027-06-15' },
+          { id: 'p4c3t3', text: '블로그·SNS 원격 운영 콘텐츠 예약 발행 (1개월분)', done: false, due: '2027-06-25' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'phase5', emoji: '🌴',
+    name: '제주 생활·원격 운영', period: '2027.07 – 2028.06',
+    start: '2027-07-01', end: '2028-06-30',
+    color: '#0EA5E9',
+    categories: [
+      {
+        id: 'remote-ops', name: '📊 원격 운영 루틴',
+        tasks: [
+          { id: 'p5c1t1', text: '매일: 바디코디 당일 매출·세션 확인', done: false, due: '2027-07-07' },
+          { id: 'p5c1t2', text: '매일: 실장 보고 카톡 확인 및 회신', done: false, due: '2027-07-07' },
+          { id: 'p5c1t3', text: '주 1회: 직원 화상 미팅 루틴 안착', done: false, due: '2027-07-31' },
+          { id: 'p5c1t4', text: '월 1회: 급여·정산 원격 처리', done: false, due: '2027-08-01' },
+          { id: 'p5c1t5', text: '분기 1회: 센터 직접 방문 일정 확정', done: false, due: '2027-10-01' },
+        ]
+      },
+      {
+        id: 'marketing', name: '📣 홍보·마케팅',
+        tasks: [
+          { id: 'p5c2t1', text: '블로그 주 2-3회 발행 루틴 안착', done: false, due: '2027-08-01' },
+          { id: 'p5c2t2', text: '인스타 주 3-4회 콘텐츠 업로드 루틴 안착', done: false, due: '2027-08-01' },
+          { id: 'p5c2t3', text: '유튜브/릴스 월 4-8개 업로드 루틴 안착', done: false, due: '2027-09-01' },
+          { id: 'p5c2t4', text: '카카오채널 이벤트·재등록 안내 운영', done: false, due: '2027-08-15' },
+        ]
+      },
+      {
+        id: 'jeju-life', name: '🏖️ 제주 정착',
+        tasks: [
+          { id: 'p5c3t1', text: '제주 생활 루틴 구축 완료', done: false, due: '2027-08-31' },
+          { id: 'p5c3t2', text: '제주에서 온라인 업무 환경 세팅 완료', done: false, due: '2027-07-31' },
+          { id: 'p5c3t3', text: '1년 제주 생활 완주 🎉', done: false, due: '2028-06-30' },
+        ]
+      }
+    ]
+  }
+];
+
+const MILESTONES = [
+  { date: '2026-09-01', text: '채용 공고 게시', color: '#10B981' },
+  { date: '2026-11-15', text: '신규 실장 채용 완료', color: '#6366F1' },
+  { date: '2026-12-15', text: '파트 트레이너 채용 완료', color: '#6366F1' },
+  { date: '2027-01-31', text: '하이무브 가이드북 완성', color: '#F59E0B' },
+  { date: '2027-04-01', text: '운영 매뉴얼 완성', color: '#F59E0B' },
+  { date: '2027-04-30', text: '콘텐츠 파이프라인 완성', color: '#F59E0B' },
+  { date: '2027-06-15', text: '독립 운영 2주 테스트', color: '#EF4444' },
+  { date: '2027-06-30', text: '실장 권한 이양 완료', color: '#EF4444' },
+  { date: '2027-07-01', text: '🏝️ 제주 출발!', color: '#10B981' },
+  { date: '2028-06-30', text: '🎉 제주 1년 완주', color: '#0EA5E9' },
+];
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+
+let STATE = {
+  phases: null,
+  departDate: '2027-07-01',
+  notif: { deadline: true, weekly: false }
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('jejuplan_v1');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      STATE.phases = parsed.phases || JSON.parse(JSON.stringify(DEFAULT_PHASES));
+      STATE.departDate = parsed.departDate || '2027-07-01';
+      STATE.notif = parsed.notif || { deadline: true, weekly: false };
+    } else {
+      STATE.phases = JSON.parse(JSON.stringify(DEFAULT_PHASES));
+    }
+  } catch(e) {
+    STATE.phases = JSON.parse(JSON.stringify(DEFAULT_PHASES));
+  }
+}
+
+function saveState() {
+  localStorage.setItem('jejuplan_v1', JSON.stringify({
+    phases: STATE.phases,
+    departDate: STATE.departDate,
+    notif: STATE.notif
+  }));
+}
+
+function getAllTasks() {
+  const tasks = [];
+  STATE.phases.forEach(ph => {
+    ph.categories.forEach(cat => {
+      cat.tasks.forEach(t => {
+        tasks.push({ ...t, phaseId: ph.id, catId: cat.id, phaseName: ph.name, phaseColor: ph.color });
+      });
+    });
+  });
+  return tasks;
+}
+
+function getStats() {
+  const all = getAllTasks();
+  const done = all.filter(t => t.done).length;
+  return { total: all.length, done, pct: all.length ? Math.round(done / all.length * 100) : 0 };
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'home') renderHome();
+  if (name === 'checklist') renderChecklist();
+  if (name === 'calendar') renderCalendar();
+  if (name === 'settings') renderSettings();
+}
+
+// ══════════════════════════════════════════
+//  HOME
+// ══════════════════════════════════════════
+
+function renderHome() {
+  const today = new Date();
+  const depart = new Date(STATE.departDate + 'T00:00:00');
+  const diff = Math.ceil((depart - today) / 86400000);
+  const stats = getStats();
+
+  document.getElementById('dday-depart').textContent = diff > 0 ? `D-${diff}` : diff === 0 ? 'D-Day' : `D+${-diff}`;
+  document.getElementById('dday-pct').textContent = stats.pct + '%';
+  document.getElementById('dday-done').textContent = stats.done;
+
+  // Upcoming tasks (due within 30 days, not done)
+  const all = getAllTasks();
+  const upcoming = all.filter(t => {
+    if (t.done || !t.due) return false;
+    const due = new Date(t.due + 'T00:00:00');
+    const d = Math.ceil((due - today) / 86400000);
+    return d <= 30;
+  }).sort((a, b) => a.due.localeCompare(b.due)).slice(0, 6);
+
+  const upEl = document.getElementById('upcoming-list');
+  if (!upcoming.length) {
+    upEl.innerHTML = '<div style="text-align:center;color:var(--text-3);padding:8px;font-size:0.85rem">이번 달 마감 항목 없음 ✨</div>';
+  } else {
+    upEl.innerHTML = upcoming.map(t => {
+      const due = new Date(t.due + 'T00:00:00');
+      const d = Math.ceil((due - today) / 86400000);
+      const cls = d < 0 ? 'overdue' : d <= 7 ? 'soon' : '';
+      const label = d < 0 ? `${-d}일 초과` : d === 0 ? '오늘 마감' : `${d}일 후`;
+      return `<div class="upcoming-task" onclick="toggleTask('${t.phaseId}','${t.catId}','${t.id}')">
+        <div class="upcoming-name">${t.text}</div>
+        <div class="upcoming-due ${cls}">${label}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Phase progress
+  const ppEl = document.getElementById('phase-progress-list');
+  ppEl.innerHTML = STATE.phases.map(ph => {
+    const tasks = ph.categories.flatMap(c => c.tasks);
+    const done = tasks.filter(t => t.done).length;
+    const pct = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+    const isActive = today >= new Date(ph.start + 'T00:00:00') && today <= new Date(ph.end + 'T23:59:59');
+    return `<div class="card" style="padding:13px;margin-bottom:8px;${isActive ? 'border:1.5px solid ' + ph.color : ''}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span>${ph.emoji}</span>
+          <div>
+            <div style="font-size:0.85rem;font-weight:700">${ph.name}</div>
+            <div style="font-size:0.65rem;color:var(--text-3)">${ph.period}</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;font-weight:700;color:${ph.color}">${done}/${tasks.length}</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${ph.color}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Milestones
+  const msEl = document.getElementById('milestone-list');
+  const upcoming_ms = MILESTONES.map(m => {
+    const d = Math.ceil((new Date(m.date + 'T00:00:00') - today) / 86400000);
+    return { ...m, diff: d };
+  }).slice(0, 7);
+
+  msEl.innerHTML = upcoming_ms.map(m => {
+    const cls = m.diff < 0 ? 'past' : m.diff <= 30 ? 'soon' : '';
+    const label = m.diff < 0 ? `${Math.abs(m.diff)}일 전` : m.diff === 0 ? '오늘!' : `D-${m.diff}`;
+    return `<div class="milestone-item">
+      <div class="ms-dot ${cls}" style="${cls === '' ? 'background:' + m.color : ''}"></div>
+      <div style="flex:1">
+        <div class="ms-text">${m.text}</div>
+        <div class="ms-date">${m.date} · ${label}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  checkAlerts();
+}
+
+// ══════════════════════════════════════════
+//  CHECKLIST
+// ══════════════════════════════════════════
+
+function renderChecklist() {
+  const el = document.getElementById('phase-list');
+  el.innerHTML = STATE.phases.map((ph, pi) => {
+    const tasks = ph.categories.flatMap(c => c.tasks);
+    const done = tasks.filter(t => t.done).length;
+    const pct = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+
+    const catsHtml = ph.categories.map((cat, ci) => {
+      const tasksHtml = cat.tasks.map(t => {
+        const today = new Date();
+        let dueCls = '', dueLabel = '';
+        if (t.due) {
+          const due = new Date(t.due + 'T00:00:00');
+          const d = Math.ceil((due - today) / 86400000);
+          dueLabel = t.due;
+          if (!t.done) {
+            if (d < 0) { dueCls = 'overdue'; dueLabel += ` (${-d}일 초과)`; }
+            else if (d <= 7) { dueCls = 'soon'; dueLabel += ` (${d}일 후)`; }
+          }
+        }
+        return `<div class="task-item" onclick="toggleTask('${ph.id}','${cat.id}','${t.id}')">
+          <div class="task-check ${t.done ? 'done' : ''}">${t.done ? '✓' : ''}</div>
+          <div class="task-body">
+            <div class="task-text ${t.done ? 'done' : ''}">${t.text}</div>
+            ${dueLabel ? `<div class="task-due ${dueCls}">📅 ${dueLabel}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('');
+
+      return `<div class="cat-title">${cat.name}</div>${tasksHtml}
+        <button class="btn-add-task" onclick="openAddTaskModalFor('${ph.id}','${cat.id}')">+ 항목 추가</button>`;
+    }).join('');
+
+    const isOpen = pi === getCurrentPhaseIndex();
+    return `<div class="phase-section">
+      <div class="phase-section-header" onclick="togglePhaseSection('ps${pi}')">
+        <div class="phase-left">
+          <span class="phase-emoji">${ph.emoji}</span>
+          <div>
+            <div class="phase-name">${ph.name}</div>
+            <div class="phase-period">${ph.period}</div>
+          </div>
+        </div>
+        <div class="phase-right">
+          <span style="font-size:0.72rem;font-weight:700;color:${ph.color}">${done}/${tasks.length} (${pct}%)</span>
+          <span class="chevron ${isOpen ? 'open' : ''}" id="chv-ps${pi}">▼</span>
+        </div>
+      </div>
+      <div class="phase-section-body ${isOpen ? 'open' : ''}" id="ps${pi}">${catsHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function getCurrentPhaseIndex() {
+  const today = new Date();
+  for (let i = 0; i < STATE.phases.length; i++) {
+    const ph = STATE.phases[i];
+    if (today >= new Date(ph.start + 'T00:00:00') && today <= new Date(ph.end + 'T23:59:59')) return i;
+  }
+  return 0;
+}
+
+function togglePhaseSection(id) {
+  const body = document.getElementById(id);
+  const idx = id.replace('ps','');
+  const chv = document.getElementById('chv-' + id);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chv.classList.toggle('open', !isOpen);
+}
+
+function toggleTask(phaseId, catId, taskId) {
+  const phase = STATE.phases.find(p => p.id === phaseId);
+  if (!phase) return;
+  const cat = phase.categories.find(c => c.id === catId);
+  if (!cat) return;
+  const task = cat.tasks.find(t => t.id === taskId);
+  if (!task) return;
+  task.done = !task.done;
+  saveState();
+  renderChecklist();
+  updateHeader();
+}
+
+function updateHeader() {
+  const stats = getStats();
+  document.getElementById('dday-pct').textContent = stats.pct + '%';
+  document.getElementById('dday-done').textContent = stats.done;
+}
+
+// ══════════════════════════════════════════
+//  CALENDAR
+// ══════════════════════════════════════════
+
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let selectedCalDate = null;
+
+function renderCalendar() {
+  const firstDay = new Date(calYear, calMonth, 1);
+  const lastDay = new Date(calYear, calMonth + 1, 0);
+  const today = new Date();
+
+  const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  document.getElementById('cal-month-label').textContent = `${calYear}년 ${monthNames[calMonth]}`;
+
+  // Collect events for this month
+  const allTasks = getAllTasks();
+  const eventDays = new Set();
+  allTasks.forEach(t => {
+    if (t.due && t.due.startsWith(`${calYear}-${String(calMonth+1).padStart(2,'0')}`)) {
+      eventDays.add(parseInt(t.due.split('-')[2]));
+    }
+  });
+  const milestoneDays = new Set();
+  MILESTONES.forEach(m => {
+    if (m.date.startsWith(`${calYear}-${String(calMonth+1).padStart(2,'0')}`)) {
+      milestoneDays.add(parseInt(m.date.split('-')[2]));
+    }
+  });
+
+  const dow = ['일','월','화','수','목','금','토'];
+  let html = dow.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  const startDow = firstDay.getDay();
+  // Previous month days
+  const prevLast = new Date(calYear, calMonth, 0).getDate();
+  for (let i = startDow - 1; i >= 0; i--) {
+    html += `<div class="cal-day other-month">${prevLast - i}</div>`;
+  }
+
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
+    const hasEvent = eventDays.has(d);
+    const isMilestone = milestoneDays.has(d);
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    let cls = 'cal-day';
+    if (isToday) cls += ' today';
+    if (isMilestone) cls += ' milestone-day';
+    if (hasEvent) cls += ' has-event';
+    html += `<div class="${cls}" onclick="selectCalDate('${dateStr}')">${d}</div>`;
+  }
+
+  // Next month fill
+  const endDow = lastDay.getDay();
+  for (let d = 1; d < 7 - endDow; d++) {
+    html += `<div class="cal-day other-month">${d}</div>`;
+  }
+
+  document.getElementById('cal-grid').innerHTML = html;
+  renderCalEvents(null);
+}
+
+function selectCalDate(dateStr) {
+  selectedCalDate = dateStr;
+  renderCalEvents(dateStr);
+}
+
+function renderCalEvents(dateStr) {
+  const allTasks = getAllTasks();
+  const label = document.getElementById('cal-selected-label');
+  const list = document.getElementById('cal-event-list');
+
+  let events = [];
+
+  if (dateStr) {
+    label.textContent = `${dateStr} 일정`;
+    events = allTasks.filter(t => t.due === dateStr).map(t => ({
+      name: t.text, date: t.due, color: t.phaseColor, done: t.done
+    }));
+    MILESTONES.filter(m => m.date === dateStr).forEach(m => {
+      events.unshift({ name: '🏁 ' + m.text, date: m.date, color: m.color, done: false });
+    });
+  } else {
+    const prefix = `${calYear}-${String(calMonth+1).padStart(2,'0')}`;
+    label.textContent = `${calYear}년 ${calMonth+1}월 전체 일정`;
+    events = allTasks.filter(t => t.due && t.due.startsWith(prefix)).map(t => ({
+      name: t.text, date: t.due, color: t.phaseColor, done: t.done
+    })).sort((a,b) => a.date.localeCompare(b.date));
+    MILESTONES.filter(m => m.date.startsWith(prefix)).forEach(m => {
+      events.push({ name: '🏁 ' + m.text, date: m.date, color: m.color, done: false });
+    });
+    events.sort((a,b) => a.date.localeCompare(b.date));
+  }
+
+  if (!events.length) {
+    list.innerHTML = '<div style="color:var(--text-3);font-size:0.85rem;text-align:center;padding:10px">일정 없음</div>';
+    return;
+  }
+
+  list.innerHTML = events.map(e => `
+    <div class="event-item">
+      <div class="event-dot" style="background:${e.color}"></div>
+      <div>
+        <div class="event-name" style="${e.done ? 'text-decoration:line-through;color:var(--text-3)' : ''}">${e.name}</div>
+        <div class="event-date">${e.date}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function changeCalMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  selectedCalDate = null;
+  renderCalendar();
+}
+
+// ══════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════
+
+function renderSettings() {
+  const d = new Date(STATE.departDate + 'T00:00:00');
+  document.getElementById('depart-display').textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+
+  document.getElementById('toggle-deadline').classList.toggle('on', STATE.notif.deadline);
+  document.getElementById('toggle-weekly').classList.toggle('on', STATE.notif.weekly);
+
+  const stats = getStats();
+  document.getElementById('total-stats').innerHTML = `
+    <div class="stat-box"><div class="stat-num">${stats.total}</div><div class="stat-label">전체 항목</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--primary)">${stats.done}</div><div class="stat-label">완료</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--text-2)">${stats.total - stats.done}</div><div class="stat-label">남은 항목</div></div>
+  `;
+
+  const perm = Notification.permission;
+  document.getElementById('notif-perm-desc').textContent =
+    perm === 'granted' ? '✅ 허용됨' : perm === 'denied' ? '❌ 차단됨 (브라우저 설정에서 변경)' : '아직 허용하지 않음';
+  document.getElementById('notif-perm-btn').style.display = perm === 'granted' ? 'none' : '';
+}
+
+function toggleNotif(key) {
+  STATE.notif[key] = !STATE.notif[key];
+  saveState();
+  renderSettings();
+}
+
+function requestNotifPerm() {
+  Notification.requestPermission().then(() => renderSettings());
+}
+
+function editDepartDate() {
+  document.getElementById('depart-date-input').value = STATE.departDate;
+  openModal('modal-depart');
+}
+
+function saveDepartDate() {
+  const val = document.getElementById('depart-date-input').value;
+  if (val) { STATE.departDate = val; saveState(); }
+  closeModal('modal-depart');
+  renderSettings();
+  renderHome();
+}
+
+// ══════════════════════════════════════════
+//  ADD TASK MODAL
+// ══════════════════════════════════════════
+
+function openAddTaskModal() { openAddTaskModalFor(null, null); }
+
+function openAddTaskModalFor(phaseId, catId) {
+  const phSel = document.getElementById('add-task-phase');
+  phSel.innerHTML = STATE.phases.map(p => `<option value="${p.id}">${p.emoji} ${p.name}</option>`).join('');
+  if (phaseId) phSel.value = phaseId;
+  updateCatSelect();
+  if (catId) document.getElementById('add-task-cat').value = catId;
+  document.getElementById('add-task-text').value = '';
+  document.getElementById('add-task-due').value = '';
+  openModal('modal-add-task');
+}
+
+function updateCatSelect() {
+  const phId = document.getElementById('add-task-phase').value;
+  const phase = STATE.phases.find(p => p.id === phId);
+  const catSel = document.getElementById('add-task-cat');
+  catSel.innerHTML = (phase?.categories || []).map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function addTask() {
+  const phId = document.getElementById('add-task-phase').value;
+  const catId = document.getElementById('add-task-cat').value;
+  const text = document.getElementById('add-task-text').value.trim();
+  const due = document.getElementById('add-task-due').value;
+  if (!text) { alert('내용을 입력해 주세요'); return; }
+
+  const phase = STATE.phases.find(p => p.id === phId);
+  const cat = phase?.categories.find(c => c.id === catId);
+  if (!cat) return;
+
+  const id = 'u' + Date.now().toString(36);
+  cat.tasks.push({ id, text, done: false, due: due || null });
+  saveState();
+  closeModal('modal-add-task');
+  renderChecklist();
+}
+
+// ══════════════════════════════════════════
+//  ALERTS
+// ══════════════════════════════════════════
+
+function checkAlerts() {
+  if (!STATE.notif.deadline) { document.getElementById('alert-badge').style.display = 'none'; return; }
+  const today = new Date();
+  const alerts = getAllTasks().filter(t => {
+    if (t.done || !t.due) return false;
+    const d = Math.ceil((new Date(t.due + 'T00:00:00') - today) / 86400000);
+    return d <= 7;
+  });
+  const badge = document.getElementById('alert-badge');
+  if (alerts.length) {
+    badge.textContent = alerts.length;
+    badge.style.display = '';
+    if (Notification.permission === 'granted' && alerts.length) {
+      new Notification('🏝️ 제주 프로젝트 알림', {
+        body: `마감 7일 이내 항목 ${alerts.length}개가 있어요`,
+        icon: '/favicon.ico'
+      });
+    }
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ══════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════
+
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); });
+});
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `jejuplan_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function resetData() {
+  if (!confirm('모든 체크 항목을 초기화할까요?')) return;
+  STATE.phases = JSON.parse(JSON.stringify(DEFAULT_PHASES));
+  saveState();
+  renderHome();
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+
+loadState();
+renderHome();
+</script>
+</body>
+</html>
