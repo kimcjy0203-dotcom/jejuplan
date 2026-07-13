@@ -680,39 +680,48 @@ body {
 <!-- ══════════ PLAN ══════════ -->
 <div class="panel" id="panel-plan">
 
-  <div class="section-header">📊 PT 매출 설정</div>
+  <div class="section-header">📊 세션 수 설정</div>
   <div class="card">
     <div class="plan-input-row">
-      <div><div class="plan-input-label">세션 단가</div></div>
+      <div><div class="plan-input-label">기준 세션 단가</div><div class="plan-input-sub">10회 6만 / 20회 5.5만 / 30회 5만 / 50회+ 4.5만</div></div>
       <div class="plan-input-right">
         <input class="plan-num" type="number" id="plan-price" value="50000" min="10000" step="5000" oninput="renderPlan()">
         <span class="plan-unit">원/회</span>
       </div>
     </div>
     <div class="plan-input-row">
-      <div><div class="plan-input-label">실장</div><div class="plan-input-sub">9시간 근무</div></div>
+      <div><div class="plan-input-label">오빠</div><div class="plan-input-sub">9h · 고정급여 150만</div></div>
       <div class="plan-input-right">
-        <input class="plan-num" type="number" id="plan-mgr-sess" value="6" min="1" max="12" oninput="renderPlan()">
+        <input class="plan-num" type="number" id="plan-hub-sess" value="6" min="0" max="12" oninput="renderPlan()">
         <span class="plan-unit">세션/일</span>
-        <input class="plan-num" type="number" id="plan-mgr-days" value="25" min="1" max="31" oninput="renderPlan()">
+        <input class="plan-num" type="number" id="plan-hub-days" value="25" min="0" max="31" oninput="renderPlan()">
         <span class="plan-unit">일/월</span>
       </div>
     </div>
     <div class="plan-input-row">
-      <div><div class="plan-input-label">정직원</div><div class="plan-input-sub">9시간 근무</div></div>
+      <div><div class="plan-input-label">나</div><div class="plan-input-sub">9h · 고정급여 180만</div></div>
       <div class="plan-input-right">
-        <input class="plan-num" type="number" id="plan-ft-sess" value="6" min="1" max="12" oninput="renderPlan()">
+        <input class="plan-num" type="number" id="plan-me-sess" value="6" min="0" max="12" oninput="renderPlan()">
         <span class="plan-unit">세션/일</span>
-        <input class="plan-num" type="number" id="plan-ft-days" value="25" min="1" max="31" oninput="renderPlan()">
+        <input class="plan-num" type="number" id="plan-me-days" value="25" min="0" max="31" oninput="renderPlan()">
         <span class="plan-unit">일/월</span>
       </div>
     </div>
     <div class="plan-input-row">
-      <div><div class="plan-input-label">파트타임</div><div class="plan-input-sub">5시간 근무</div></div>
+      <div><div class="plan-input-label">정직원</div><div class="plan-input-sub">9h · 기본 120만 + 세션50% + 매출커미션</div></div>
       <div class="plan-input-right">
-        <input class="plan-num" type="number" id="plan-pt-sess" value="4" min="1" max="8" oninput="renderPlan()">
+        <input class="plan-num" type="number" id="plan-ft-sess" value="6" min="0" max="12" oninput="renderPlan()">
         <span class="plan-unit">세션/일</span>
-        <input class="plan-num" type="number" id="plan-pt-days" value="22" min="1" max="31" oninput="renderPlan()">
+        <input class="plan-num" type="number" id="plan-ft-days" value="25" min="0" max="31" oninput="renderPlan()">
+        <span class="plan-unit">일/월</span>
+      </div>
+    </div>
+    <div class="plan-input-row">
+      <div><div class="plan-input-label">파트타임</div><div class="plan-input-sub">5h · 기본 50만 + 세션50%</div></div>
+      <div class="plan-input-right">
+        <input class="plan-num" type="number" id="plan-pt-sess" value="4" min="0" max="8" oninput="renderPlan()">
+        <span class="plan-unit">세션/일</span>
+        <input class="plan-num" type="number" id="plan-pt-days" value="22" min="0" max="31" oninput="renderPlan()">
         <span class="plan-unit">일/월</span>
       </div>
     </div>
@@ -726,33 +735,46 @@ body {
   <div class="card" style="padding:0;overflow:hidden">
     <table class="salary-table">
       <thead><tr>
-        <th>직원</th><th>세션 커미션</th><th>추가</th><th style="text-align:right">예상 월수입</th>
+        <th>직원</th><th>기본급</th><th>세션 커미션</th><th>추가 수당</th><th style="text-align:right">예상 월수입</th>
       </tr></thead>
       <tbody>
         <tr>
-          <td><div style="font-weight:700">실장</div><div style="font-size:0.7rem;color:var(--text-3)">9h · 세션+매출%</div></td>
-          <td><input class="salary-pct-input" type="number" id="plan-mgr-comm" value="50" min="0" max="100" oninput="renderPlan()"> %</td>
-          <td><input class="salary-pct-input" type="number" id="plan-mgr-rev" value="3" min="0" max="20" oninput="renderPlan()"> <span style="font-size:0.7rem;color:var(--text-3)">% (매출)</span></td>
-          <td class="salary-num" id="plan-mgr-pay">-</td>
+          <td><div style="font-weight:700">오빠</div><div style="font-size:0.7rem;color:var(--text-3)">9h · 오너</div></td>
+          <td style="font-size:0.78rem">고정</td>
+          <td style="font-size:0.78rem;color:var(--text-3)">100% 귀속</td>
+          <td style="font-size:0.72rem;color:var(--text-3)">-</td>
+          <td class="salary-num" id="plan-hub-pay">150만</td>
         </tr>
         <tr>
-          <td><div style="font-weight:700">정직원</div><div style="font-size:0.7rem;color:var(--text-3)">9h · 세션만</div></td>
-          <td><input class="salary-pct-input" type="number" id="plan-ft-comm" value="40" min="0" max="100" oninput="renderPlan()"> %</td>
-          <td><span style="font-size:0.72rem;color:var(--text-3)">없음</span></td>
+          <td><div style="font-weight:700">나</div><div style="font-size:0.7rem;color:var(--text-3)">9h · 오너</div></td>
+          <td style="font-size:0.78rem">고정</td>
+          <td style="font-size:0.78rem;color:var(--text-3)">100% 귀속</td>
+          <td style="font-size:0.72rem;color:var(--text-3)">-</td>
+          <td class="salary-num" id="plan-me-pay">180만</td>
+        </tr>
+        <tr>
+          <td><div style="font-weight:700">정직원</div><div style="font-size:0.7rem;color:var(--text-3)">9h · 커미션</div></td>
+          <td style="font-size:0.78rem">120만</td>
+          <td style="font-size:0.78rem">세션×단가×50%</td>
+          <td style="font-size:0.7rem;color:var(--text-2)" id="plan-ft-comm-label">-</td>
           <td class="salary-num" id="plan-ft-pay">-</td>
         </tr>
         <tr>
-          <td><div style="font-weight:700">파트</div><div style="font-size:0.7rem;color:var(--text-3)">5h · 기본+세션</div></td>
-          <td><input class="salary-pct-input" type="number" id="plan-pt-comm" value="40" min="0" max="100" oninput="renderPlan()"> %</td>
-          <td><input class="salary-pct-input" style="width:52px" type="number" id="plan-pt-base" value="50" min="0" oninput="renderPlan()"> <span style="font-size:0.7rem;color:var(--text-3)">만 기본</span></td>
+          <td><div style="font-weight:700">파트</div><div style="font-size:0.7rem;color:var(--text-3)">5h · 커미션</div></td>
+          <td style="font-size:0.78rem">50만</td>
+          <td style="font-size:0.78rem">세션×단가×50%</td>
+          <td style="font-size:0.72rem;color:var(--text-3)">-</td>
           <td class="salary-num" id="plan-pt-pay">-</td>
         </tr>
         <tr style="background:var(--bg)">
-          <td colspan="3" style="font-size:0.78rem;font-weight:700;color:var(--text-2)">인건비 합계</td>
+          <td colspan="4" style="font-size:0.78rem;font-weight:700;color:var(--text-2)">인건비 합계</td>
           <td class="salary-num" id="plan-labor-total">-</td>
         </tr>
       </tbody>
     </table>
+    <div style="padding:10px 12px;font-size:0.68rem;color:var(--text-3);border-top:1px solid var(--border)">
+      정직원 매출 커미션: PT 매출 300~600만 3% / 600~1000만 4% / 1000만 이상 5%
+    </div>
   </div>
 
   <div class="section-header">📈 손익 시뮬레이션</div>
@@ -2172,33 +2194,43 @@ function renderFinance() {
 function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
 
 function renderPlan() {
-  const price    = v('plan-price');
-  const mgrSess  = v('plan-mgr-sess') * v('plan-mgr-days');
+  const price    = v('plan-price') || 50000;
+  const hubSess  = v('plan-hub-sess') * v('plan-hub-days');
+  const meSess   = v('plan-me-sess')  * v('plan-me-days');
   const ftSess   = v('plan-ft-sess')  * v('plan-ft-days');
   const ptSess   = v('plan-pt-sess')  * v('plan-pt-days');
-  const totalSess = mgrSess + ftSess + ptSess;
+  const totalSess = hubSess + meSess + ftSess + ptSess;
   const revenue  = totalSess * price;
+  const ptRev    = revenue; // PT 매출 전체 기준
 
   // 매출 표시
-  document.getElementById('plan-revenue-display').textContent = Math.round(revenue / 10000) + '만원';
-  document.getElementById('plan-sessions-label').textContent  = `총 ${totalSess}세션/월`;
+  const fmt = n => Math.round(n / 10000) + '만';
+  document.getElementById('plan-revenue-display').textContent = fmt(revenue) + '원';
+  document.getElementById('plan-sessions-label').textContent  =
+    `총 ${totalSess}세션 (오빠 ${hubSess} / 나 ${meSess} / 정직원 ${ftSess} / 파트 ${ptSess})`;
 
   // 급여 계산
-  const mgrComm = v('plan-mgr-comm') / 100;
-  const mgrRevP = v('plan-mgr-rev')  / 100;
-  const ftComm  = v('plan-ft-comm')  / 100;
-  const ptComm  = v('plan-pt-comm')  / 100;
-  const ptBase  = v('plan-pt-base')  * 10000;
+  const hubPay = 1500000;
+  const mePay  = 1800000;
 
-  const mgrPay  = mgrSess * price * mgrComm + revenue * mgrRevP;
-  const ftPay   = ftSess  * price * ftComm;
-  const ptPay   = ptSess  * price * ptComm + ptBase;
-  const labor   = mgrPay + ftPay + ptPay;
+  const ftUnit    = tierPrice(ftSess);
+  const ftSessInc = ftSess * ftUnit * 0.5;
+  const ftBonus   = ftRevComm(ptRev);
+  const ftCommPct = ptRev >= 10000000 ? 5 : ptRev >= 6000000 ? 4 : ptRev >= 3000000 ? 3 : 0;
+  const ftPay     = 1200000 + ftSessInc + ftBonus;
 
-  const fmt = n => Math.round(n / 10000) + '만';
-  document.getElementById('plan-mgr-pay').textContent    = fmt(mgrPay);
-  document.getElementById('plan-ft-pay').textContent     = fmt(ftPay);
-  document.getElementById('plan-pt-pay').textContent     = fmt(ptPay);
+  const ptUnit    = tierPrice(ptSess);
+  const ptSessInc = ptSess * ptUnit * 0.5;
+  const ptPay     = ptSess > 0 ? 500000 + ptSessInc : 0;
+
+  const labor = hubPay + mePay + ftPay + ptPay;
+
+  document.getElementById('plan-hub-pay').textContent = fmt(hubPay);
+  document.getElementById('plan-me-pay').textContent  = fmt(mePay);
+  document.getElementById('plan-ft-pay').textContent  = fmt(ftPay);
+  document.getElementById('plan-ft-comm-label').textContent =
+    ftCommPct > 0 ? `매출커미션 ${ftCommPct}%=${fmt(ftBonus)}` : '매출커미션 해당없음';
+  document.getElementById('plan-pt-pay').textContent  = ptSess > 0 ? fmt(ptPay) : '-';
   document.getElementById('plan-labor-total').textContent = fmt(labor);
 
   // 손익 시나리오
@@ -2214,7 +2246,11 @@ function renderPlan() {
 
   document.getElementById('plan-scenarios').innerHTML = scenarios.map(s => {
     const rev    = revenue * s.pct;
-    const profit = rev - (labor * s.pct) - fixed - insurance;
+    const sFtB   = ftRevComm(rev);
+    const sFtPay = 1200000 + (ftSess * ftUnit * 0.5 * s.pct) + sFtB;
+    const sPtPay = ptSess > 0 ? 500000 + (ptSess * ptUnit * 0.5 * s.pct) : 0;
+    const sLabor = hubPay + mePay + sFtPay + sPtPay;
+    const profit = rev - sLabor - fixed - insurance;
     return `<div class="scenario-card ${s.cls}">
       <div class="scenario-label">${s.label}</div>
       <div class="scenario-revenue">매출 ${Math.round(rev/10000)}만</div>
@@ -2223,7 +2259,7 @@ function renderPlan() {
   }).join('');
 
   const profit100 = revenue - totalCost;
-  document.getElementById('plan-profit-display').textContent = Math.round(profit100 / 10000) + '만원';
+  document.getElementById('plan-profit-display').textContent = fmt(profit100) + '원';
 }
 
 // ══════════════════════════════════════════
