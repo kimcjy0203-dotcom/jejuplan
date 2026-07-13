@@ -431,6 +431,25 @@ body {
 .goal-status.warn { background: var(--orange-light); color: var(--orange); }
 .goal-status.bad { background: var(--red-light); color: var(--red); }
 
+/* Finance tabs */
+.fin-tab-row { display: flex; gap: 4px; background: var(--bg); border-radius: 12px; padding: 3px; margin-bottom: 14px; }
+.fin-tab { flex: 1; padding: 8px 0; border: none; border-radius: 9px; font-size: 0.8rem; font-weight: 700; cursor: pointer; background: none; color: var(--text-2); transition: all 0.15s; }
+.fin-tab.active { background: white; color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+
+/* Compare table */
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.compare-table th { padding: 8px 8px; background: var(--bg); font-size: 0.65rem; font-weight: 700; color: var(--text-2); text-align: center; white-space: nowrap; }
+.compare-table th:first-child { text-align: left; }
+.compare-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: center; vertical-align: middle; }
+.compare-table td:first-child { text-align: left; font-weight: 700; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr.cur-month td { background: var(--primary-light); }
+.compare-month-btn { background: none; border: none; font-weight: 700; color: var(--primary); cursor: pointer; padding: 0; font-size: 0.82rem; text-decoration: underline; }
+.compare-badge { display: inline-block; font-size: 0.62rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; }
+.compare-badge.ok { background: var(--green-light); color: var(--green); }
+.compare-badge.ng { background: var(--red-light); color: var(--red); }
+.compare-empty { text-align: center; padding: 32px 0; color: var(--text-3); font-size: 0.82rem; }
+
 /* ── Plan Panel ── */
 .plan-section { margin-bottom: 14px; }
 .plan-input-row {
@@ -809,115 +828,148 @@ body {
 <!-- ══════════ FINANCE ══════════ -->
 <div class="panel" id="panel-finance">
 
-  <!-- 월 네비게이션 -->
-  <div class="fin-month-nav">
-    <button class="fin-month-btn" onclick="finChangeMonth(-1)">‹</button>
-    <div class="fin-month-title" id="fin-month-title"></div>
-    <button class="fin-month-btn" onclick="finChangeMonth(1)">›</button>
+  <!-- 탭 -->
+  <div class="fin-tab-row">
+    <button class="fin-tab active" id="fin-tab-input"  onclick="switchFinTab('input')">이번 달 입력</button>
+    <button class="fin-tab"        id="fin-tab-compare" onclick="switchFinTab('compare')">월별 비교</button>
   </div>
 
-  <!-- 요약 카드 -->
-  <div class="summary-cards" id="fin-summary"></div>
+  <!-- ── 입력 뷰 ── -->
+  <div id="fin-view-input">
 
-  <!-- 직원별 세션·수입 -->
-  <div class="section-header">👥 직원별 세션 & 수입</div>
-  <div class="card" style="padding:0;overflow:hidden">
-    <table class="staff-fin-table">
-      <thead><tr>
-        <th style="text-align:left">직원</th>
-        <th>세션 수</th>
-        <th>세션 수입</th>
-        <th>추가 수당</th>
-        <th>총 수입</th>
-      </tr></thead>
-      <tbody id="fin-staff-body"></tbody>
-    </table>
-  </div>
+    <!-- 월 네비게이션 -->
+    <div class="fin-month-nav">
+      <button class="fin-month-btn" onclick="finChangeMonth(-1)">‹</button>
+      <div class="fin-month-title" id="fin-month-title"></div>
+      <button class="fin-month-btn" onclick="finChangeMonth(1)">›</button>
+    </div>
 
-  <!-- 매출 입력 -->
-  <div class="section-header">📥 매출 입력</div>
-  <div class="card">
-    <div class="fin-input-grid">
-      <div class="fin-input-item">
-        <label>PT 매출 (만원)</label>
-        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-pt-rev" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
-      </div>
-      <div class="fin-input-item">
-        <label>기타 매출 (만원)</label>
-        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-other-rev" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+    <!-- 요약 카드 -->
+    <div class="summary-cards" id="fin-summary"></div>
+
+    <!-- 직원별 세션·수입 -->
+    <div class="section-header">👥 직원별 세션 & 수입</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="staff-fin-table">
+        <thead><tr>
+          <th style="text-align:left">직원</th>
+          <th>세션 수</th>
+          <th>세션 수입</th>
+          <th>추가 수당</th>
+          <th>총 수입</th>
+        </tr></thead>
+        <tbody id="fin-staff-body"></tbody>
+      </table>
+    </div>
+
+    <!-- 매출 입력 -->
+    <div class="section-header">📥 매출 입력</div>
+    <div class="card">
+      <div class="fin-input-grid">
+        <div class="fin-input-item">
+          <label>PT 매출 (만원)</label>
+          <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-pt-rev" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+        </div>
+        <div class="fin-input-item">
+          <label>기타 매출 (만원)</label>
+          <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-other-rev" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 지출 입력 -->
-  <div class="section-header">📤 지출 입력</div>
-  <div class="card">
-    <div class="fin-input-grid">
-      <div class="fin-input-item">
-        <label>임대·관리비 (만원)</label>
-        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-rent" placeholder="400" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+    <!-- 지출 입력 -->
+    <div class="section-header">📤 지출 입력</div>
+    <div class="card">
+      <div class="fin-input-grid">
+        <div class="fin-input-item">
+          <label>임대·관리비 (만원)</label>
+          <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-rent" placeholder="400" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+        </div>
+        <div class="fin-input-item">
+          <label>기기·소모품 (만원)</label>
+          <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-equip" placeholder="80" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+        </div>
+        <div class="fin-input-item">
+          <label>4대보험 사측 (만원)</label>
+          <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-insur" placeholder="60" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+        </div>
+        <div class="fin-input-item">
+          <label>기타 지출 (만원)</label>
+          <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-other-exp" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+        </div>
       </div>
-      <div class="fin-input-item">
-        <label>기기·소모품 (만원)</label>
-        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-equip" placeholder="80" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
-      </div>
-      <div class="fin-input-item">
-        <label>4대보험 사측 (만원)</label>
-        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-insur" placeholder="60" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
-      </div>
-      <div class="fin-input-item">
-        <label>기타 지출 (만원)</label>
-        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-other-exp" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+      <div style="margin-top:12px">
+        <label style="font-size:0.7rem;font-weight:600;color:var(--text-2)">메모</label>
+        <input type="text" class="fin-num" id="fin-memo" placeholder="이번 달 특이사항 (선택)" style="text-align:left;margin-top:4px" oninput="saveFinInput()">
       </div>
     </div>
-    <div style="margin-top:12px">
-      <label style="font-size:0.7rem;font-weight:600;color:var(--text-2)">메모</label>
-      <input type="text" class="fin-num" id="fin-memo" placeholder="이번 달 특이사항 (선택)" style="text-align:left;margin-top:4px" oninput="saveFinInput()">
-    </div>
-  </div>
 
-  <!-- 직원 세션 입력 -->
-  <div class="section-header">✏️ 세션 수 입력</div>
-  <div class="card">
-    <div class="fin-input-grid">
-      <div class="fin-input-item">
-        <label>실장 세션 수</label>
-        <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-mgr-sess" placeholder="150" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
-      </div>
-      <div class="fin-input-item">
-        <label>정직원 세션 수</label>
-        <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-ft-sess" placeholder="150" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
-      </div>
-      <div class="fin-input-item">
-        <label>파트 세션 수</label>
-        <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-pt-sess" placeholder="88" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
+    <!-- 직원 세션 입력 -->
+    <div class="section-header">✏️ 세션 수 입력</div>
+    <div class="card">
+      <div class="fin-input-grid">
+        <div class="fin-input-item">
+          <label>실장 세션 수</label>
+          <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-mgr-sess" placeholder="150" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
+        </div>
+        <div class="fin-input-item">
+          <label>정직원 세션 수</label>
+          <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-ft-sess" placeholder="150" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
+        </div>
+        <div class="fin-input-item">
+          <label>파트 세션 수</label>
+          <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-pt-sess" placeholder="88" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 추이 차트 -->
-  <div class="section-header">📈 6개월 추이</div>
-  <div class="card">
-    <div class="chart-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#6C63FF"></div>매출</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#E5E7EB"></div>지출</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div>순이익</div>
-    </div>
-    <div class="chart-wrap" id="fin-chart"></div>
-  </div>
-
-  <!-- 제주 이주 목표 -->
-  <div class="section-header">🏝️ 제주 이주 재무 목표</div>
-  <div class="card">
-    <div class="plan-input-row" style="padding-top:0">
-      <div><div class="plan-input-label">목표 월 순이익</div><div class="plan-input-sub">이 이상이면 이주 재무 조건 충족</div></div>
-      <div class="plan-input-right">
-        <input class="plan-num" type="number" id="fin-target" value="300" min="0" oninput="renderFinance()">
-        <span class="plan-unit">만원</span>
+    <!-- 추이 차트 -->
+    <div class="section-header">📈 6개월 추이</div>
+    <div class="card">
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#6C63FF"></div>매출</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#E5E7EB"></div>지출</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div>순이익</div>
       </div>
+      <div class="chart-wrap" id="fin-chart"></div>
     </div>
-    <div id="fin-goal-section"></div>
-  </div>
+
+    <!-- 제주 이주 목표 -->
+    <div class="section-header">🏝️ 제주 이주 재무 목표</div>
+    <div class="card">
+      <div class="plan-input-row" style="padding-top:0">
+        <div><div class="plan-input-label">목표 월 순이익</div><div class="plan-input-sub">이 이상이면 이주 재무 조건 충족</div></div>
+        <div class="plan-input-right">
+          <input class="plan-num" type="number" id="fin-target" value="300" min="0" oninput="renderFinance()">
+          <span class="plan-unit">만원</span>
+        </div>
+      </div>
+      <div id="fin-goal-section"></div>
+    </div>
+
+  </div><!-- /fin-view-input -->
+
+  <!-- ── 비교 뷰 ── -->
+  <div id="fin-view-compare" style="display:none">
+
+    <!-- 차트 (전체 기간) -->
+    <div class="section-header">📈 전체 추이</div>
+    <div class="card">
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#6C63FF"></div>매출</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#E5E7EB"></div>지출</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div>순이익</div>
+      </div>
+      <div class="chart-wrap" id="fin-chart-compare"></div>
+    </div>
+
+    <!-- 월별 비교 테이블 -->
+    <div class="section-header">📋 월별 상세 비교</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div id="fin-compare-table"></div>
+    </div>
+
+  </div><!-- /fin-view-compare -->
 
 </div><!-- /panel-finance -->
 
@@ -1810,6 +1862,145 @@ function saveFinInput() {
   renderFinance();
 }
 
+let finCurrentTab = 'input';
+
+function switchFinTab(tab) {
+  finCurrentTab = tab;
+  document.getElementById('fin-tab-input').classList.toggle('active', tab === 'input');
+  document.getElementById('fin-tab-compare').classList.toggle('active', tab === 'compare');
+  document.getElementById('fin-view-input').style.display   = tab === 'input'   ? '' : 'none';
+  document.getElementById('fin-view-compare').style.display = tab === 'compare' ? '' : 'none';
+  if (tab === 'compare') renderFinComparison();
+}
+
+function renderFinComparison() {
+  const target = (parseFloat(document.getElementById('fin-target')?.value) || 300) * 10000;
+
+  // 기록된 월 정렬 (최신→과거)
+  const months = Object.keys(FIN.months)
+    .filter(ym => {
+      const d = FIN.months[ym];
+      return d && (d.ptRev || d.otherRev || d.mgrSess || d.ftSess || d.ptSess);
+    })
+    .sort((a, b) => b.localeCompare(a));
+
+  if (months.length === 0) {
+    document.getElementById('fin-compare-table').innerHTML =
+      '<div class="compare-empty">아직 기록된 달이 없어요.<br>이번 달 입력 탭에서 먼저 데이터를 입력하세요.</div>';
+    document.getElementById('fin-chart-compare').innerHTML = '';
+    return;
+  }
+
+  // 차트 — 기록된 최대 12개월
+  const chartMonths = months.slice().reverse().slice(-12);
+  drawFinChartTo('fin-chart-compare', chartMonths);
+
+  // 테이블
+  let rows = '';
+  months.forEach((ym, idx) => {
+    const c = calcFinMonth(ym);
+    const [y, m] = ym.split('-');
+    const label = `${y}년 ${parseInt(m)}월`;
+    const isCur = ym === currentFinMonth;
+
+    // 전월 대비 (리스트에서 다음 항목 = 한 달 앞)
+    const prevYM = months[idx + 1];
+    let changeCell = '<td>-</td>';
+    if (prevYM) {
+      const pc = calcFinMonth(prevYM);
+      if (pc.profit !== 0 || c.profit !== 0) {
+        const diff = c.profit - pc.profit;
+        const pct  = pc.profit !== 0 ? Math.round(diff / Math.abs(pc.profit) * 100) : 0;
+        const cls  = diff > 0 ? 'change-up' : diff < 0 ? 'change-dn' : 'change-eq';
+        const sign = diff > 0 ? '▲' : diff < 0 ? '▼' : '±';
+        changeCell = `<td><span class="${cls}" style="font-weight:700">${sign}${Math.abs(pct)}%</span></td>`;
+      }
+    }
+
+    const goalBadge = c.profit >= target
+      ? '<span class="compare-badge ok">달성</span>'
+      : '<span class="compare-badge ng">미달</span>';
+
+    const memo = FIN.months[ym]?.memo;
+
+    rows += `<tr${isCur ? ' class="cur-month"' : ''}>
+      <td>
+        <button class="compare-month-btn" onclick="goFinMonth('${ym}')">${label}</button>
+        ${isCur ? '<span style="font-size:0.6rem;color:var(--primary);margin-left:4px">현재</span>' : ''}
+        ${memo ? `<div style="font-size:0.62rem;color:var(--text-3);margin-top:2px">${memo}</div>` : ''}
+      </td>
+      <td style="color:var(--primary);font-weight:700">${fmtMStr(c.totalRev)}</td>
+      <td style="color:var(--text-2)">${fmtMStr(c.totalExp)}</td>
+      <td style="color:var(--text-2);font-size:0.72rem">${fmtMStr(c.labor)}</td>
+      <td style="${c.profit >= 0 ? 'color:var(--green)' : 'color:var(--red)'};font-weight:800">${fmtMStr(c.profit)}</td>
+      ${changeCell}
+      <td>${goalBadge}</td>
+    </tr>`;
+  });
+
+  // 합계 행
+  const totalRev  = months.reduce((s, ym) => s + calcFinMonth(ym).totalRev, 0);
+  const totalExp  = months.reduce((s, ym) => s + calcFinMonth(ym).totalExp, 0);
+  const totalProf = months.reduce((s, ym) => s + calcFinMonth(ym).profit, 0);
+  const avgProf   = Math.round(totalProf / months.length);
+
+  rows += `<tr style="background:var(--bg);font-size:0.75rem">
+    <td style="font-weight:700;color:var(--text-2)">${months.length}개월 합계 / 평균</td>
+    <td style="color:var(--primary);font-weight:700">${fmtMStr(totalRev)}</td>
+    <td style="color:var(--text-2)">${fmtMStr(totalExp)}</td>
+    <td style="color:var(--text-2)">-</td>
+    <td style="${totalProf >= 0 ? 'color:var(--green)' : 'color:var(--red)'};font-weight:800">${fmtMStr(totalProf)}<br><span style="font-size:0.65rem;opacity:0.7">평균 ${fmtMStr(avgProf)}</span></td>
+    <td>-</td>
+    <td>-</td>
+  </tr>`;
+
+  document.getElementById('fin-compare-table').innerHTML = `
+    <table class="compare-table">
+      <thead><tr>
+        <th>월</th><th>총매출</th><th>총지출</th><th>인건비</th><th>순이익</th><th>전월대비</th><th>목표</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function goFinMonth(ym) {
+  currentFinMonth = ym;
+  switchFinTab('input');
+  renderFinance();
+}
+
+function drawFinChartTo(containerId, months) {
+  const vals = months.map(ym => calcFinMonth(ym));
+  const maxVal = Math.max(...vals.flatMap(v => [v.totalRev, v.totalExp, Math.abs(v.profit)]), 1000000);
+  const W = 340, H = 180, PAD_L = 36, PAD_B = 24, PAD_T = 10;
+  const chartH = H - PAD_B - PAD_T;
+  const slotW = (W - PAD_L) / months.length;
+  const BAR_W = Math.min(slotW * 0.25, 14);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;overflow:visible">`;
+  [0, 0.25, 0.5, 0.75, 1].forEach(r => {
+    const y = PAD_T + chartH * (1 - r);
+    svg += `<line x1="${PAD_L}" y1="${y}" x2="${W}" y2="${y}" stroke="#E5E7EB" stroke-width="1"/>`;
+    svg += `<text x="${PAD_L - 4}" y="${y + 4}" text-anchor="end" font-size="8" fill="#9CA3AF">${Math.round(maxVal * r / 10000)}</text>`;
+  });
+
+  vals.forEach((v, i) => {
+    const cx = PAD_L + slotW * i + slotW / 2;
+    const [, mm] = months[i].split('-');
+    const revH  = Math.max(v.totalRev  / maxVal * chartH, v.totalRev  ? 2 : 0);
+    const expH  = Math.max(v.totalExp  / maxVal * chartH, v.totalExp  ? 2 : 0);
+    const profH = Math.max(Math.abs(v.profit) / maxVal * chartH, v.profit ? 2 : 0);
+    const profColor = v.profit >= 0 ? '#10B981' : '#EF4444';
+    const x1 = cx - BAR_W * 1.6, x2 = cx - BAR_W * 0.2, x3 = cx + BAR_W * 0.9;
+    svg += `<rect x="${x1}" y="${PAD_T + chartH - revH}"  width="${BAR_W}" height="${revH}"  fill="#6C63FF" rx="2" opacity="0.85"/>`;
+    svg += `<rect x="${x2}" y="${PAD_T + chartH - expH}"  width="${BAR_W}" height="${expH}"  fill="#E5E7EB" rx="2"/>`;
+    svg += `<rect x="${x3}" y="${PAD_T + chartH - profH}" width="${BAR_W}" height="${profH}" fill="${profColor}" rx="2" opacity="0.9"/>`;
+    svg += `<text x="${cx}" y="${H - 6}" text-anchor="middle" font-size="9" fill="#9CA3AF">${parseInt(mm)}월</text>`;
+  });
+  svg += '</svg>';
+  document.getElementById(containerId).innerHTML = svg;
+}
+
 function finChangeMonth(dir) {
   let [y, m] = currentFinMonth.split('-').map(Number);
   m += dir;
@@ -1900,7 +2091,7 @@ function renderFinance() {
     </tr>`;
 
   // 차트
-  drawFinChart(getLast6Months(ym));
+  drawFinChartTo('fin-chart', getLast6Months(ym));
 
   // 제주 목표
   const target = (parseFloat(document.getElementById('fin-target')?.value) || 300) * 10000;
@@ -1938,53 +2129,6 @@ function renderFinance() {
         }).join('')}
       </div>
     </div>`;
-}
-
-function drawFinChart(months) {
-  const vals = months.map(ym => calcFinMonth(ym));
-  const maxVal = Math.max(...vals.flatMap(v => [v.totalRev, v.totalExp, Math.abs(v.profit)]), 1000000);
-  const W = 340, H = 180, PAD_L = 36, PAD_B = 24, PAD_T = 10;
-  const chartH = H - PAD_B - PAD_T;
-  const slotW = (W - PAD_L) / months.length;
-  const BAR_W = Math.min(slotW * 0.25, 14);
-
-  let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;overflow:visible">`;
-
-  // Y grid lines
-  [0, 0.25, 0.5, 0.75, 1].forEach(r => {
-    const y = PAD_T + chartH * (1 - r);
-    const label = Math.round(maxVal * r / 10000);
-    svg += `<line x1="${PAD_L}" y1="${y}" x2="${W}" y2="${y}" stroke="#E5E7EB" stroke-width="1"/>`;
-    svg += `<text x="${PAD_L - 4}" y="${y + 4}" text-anchor="end" font-size="8" fill="#9CA3AF">${label}</text>`;
-  });
-
-  vals.forEach((v, i) => {
-    const cx = PAD_L + slotW * i + slotW / 2;
-    const [, mm] = months[i].split('-');
-
-    const barH = (n, isNeg) => {
-      const h = Math.abs(n) / maxVal * chartH;
-      return Math.max(h, n !== 0 ? 2 : 0);
-    };
-
-    const revH  = barH(v.totalRev);
-    const expH  = barH(v.totalExp);
-    const profH = barH(v.profit);
-    const profColor = v.profit >= 0 ? '#10B981' : '#EF4444';
-
-    const x1 = cx - BAR_W * 1.6;
-    const x2 = cx - BAR_W * 0.2;
-    const x3 = cx + BAR_W * 0.9;
-
-    svg += `<rect x="${x1}" y="${PAD_T + chartH - revH}" width="${BAR_W}" height="${revH}" fill="#6C63FF" rx="2" opacity="0.85"/>`;
-    svg += `<rect x="${x2}" y="${PAD_T + chartH - expH}" width="${BAR_W}" height="${expH}" fill="#E5E7EB" rx="2"/>`;
-    svg += `<rect x="${x3}" y="${PAD_T + chartH - profH}" width="${BAR_W}" height="${profH}" fill="${profColor}" rx="2" opacity="0.9"/>`;
-
-    svg += `<text x="${cx}" y="${H - 6}" text-anchor="middle" font-size="9" fill="#9CA3AF">${parseInt(mm)}월</text>`;
-  });
-
-  svg += '</svg>';
-  document.getElementById('fin-chart').innerHTML = svg;
 }
 
 // ══════════════════════════════════════════
