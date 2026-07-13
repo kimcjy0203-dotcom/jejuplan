@@ -357,6 +357,80 @@ body {
 .upcoming-due.soon { color: var(--orange); font-weight: 700; }
 .upcoming-due.overdue { color: var(--red); font-weight: 700; }
 
+/* ── Finance Panel ── */
+.fin-month-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.fin-month-btn {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 7px 14px;
+  font-size: 0.9rem; cursor: pointer; color: var(--text-2);
+  transition: all 0.15s;
+}
+.fin-month-btn:active { background: var(--primary-light); color: var(--primary); }
+.fin-month-title { font-size: 1rem; font-weight: 800; }
+
+.summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.summary-card {
+  background: var(--card); border-radius: var(--radius-sm);
+  padding: 13px 10px; box-shadow: var(--shadow); text-align: center;
+}
+.summary-card.profit-pos { background: var(--green-light); }
+.summary-card.profit-neg { background: var(--red-light); }
+.summary-label { font-size: 0.65rem; font-weight: 700; color: var(--text-2); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.summary-num { font-size: 1.15rem; font-weight: 900; color: var(--text); line-height: 1; }
+.summary-card.profit-pos .summary-num { color: var(--green); }
+.summary-card.profit-neg .summary-num { color: var(--red); }
+.summary-change { font-size: 0.65rem; margin-top: 4px; font-weight: 600; }
+.change-up { color: var(--green); }
+.change-dn { color: var(--red); }
+.change-eq { color: var(--text-3); }
+
+.fin-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fin-input-item { display: flex; flex-direction: column; gap: 4px; }
+.fin-input-item label { font-size: 0.7rem; font-weight: 600; color: var(--text-2); }
+.fin-num {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; font-size: 0.85rem; font-family: inherit;
+  outline: none; background: white; width: 100%; text-align: right;
+}
+.fin-num:focus { border-color: var(--primary); }
+.fin-unit-row { display: flex; align-items: center; gap: 6px; }
+.fin-unit-row .fin-num { flex: 1; }
+.fin-unit { font-size: 0.72rem; color: var(--text-2); white-space: nowrap; }
+
+.staff-fin-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.staff-fin-table th { padding: 8px 10px; background: var(--bg); font-size: 0.68rem; font-weight: 700; color: var(--text-2); text-align: center; }
+.staff-fin-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: center; vertical-align: middle; }
+.staff-fin-table tr:last-child td { border-bottom: none; }
+.staff-fin-table .staff-name { text-align: left; font-weight: 700; font-size: 0.85rem; }
+.staff-sess-input {
+  width: 52px; border: 1.5px solid var(--border); border-radius: 7px;
+  padding: 5px 6px; font-size: 0.85rem; text-align: center;
+  font-family: inherit; outline: none;
+}
+.staff-sess-input:focus { border-color: var(--primary); }
+.staff-pay-num { font-weight: 800; color: var(--primary); font-size: 0.88rem; }
+
+/* Chart */
+.chart-wrap { overflow: hidden; margin-top: 4px; }
+.chart-legend { display: flex; gap: 14px; margin-bottom: 8px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; margin-top: 2px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: var(--text-2); }
+
+/* Jeju Goal */
+.goal-bar-wrap { background: var(--border); border-radius: 99px; height: 10px; overflow: hidden; margin: 8px 0 4px; }
+.goal-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--primary), #10B981); transition: width 0.6s ease; }
+.goal-status {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px; border-radius: var(--radius-sm); margin-top: 10px;
+  font-size: 0.82rem; font-weight: 600;
+}
+.goal-status.ok { background: var(--green-light); color: var(--green); }
+.goal-status.warn { background: var(--orange-light); color: var(--orange); }
+.goal-status.bad { background: var(--red-light); color: var(--red); }
+
 /* ── Plan Panel ── */
 .plan-section { margin-bottom: 14px; }
 .plan-input-row {
@@ -458,6 +532,9 @@ body {
     </button>
     <button class="sidebar-item" onclick="showPanel('plan')" id="nav-plan">
       <span class="sidebar-item-icon">📊</span><span class="sidebar-item-label">운영계획</span>
+    </button>
+    <button class="sidebar-item" onclick="showPanel('finance')" id="nav-finance">
+      <span class="sidebar-item-icon">💵</span><span class="sidebar-item-label">재무현황</span>
     </button>
   </nav>
 </aside>
@@ -728,6 +805,121 @@ body {
   </div>
 
 </div><!-- /panel-plan -->
+
+<!-- ══════════ FINANCE ══════════ -->
+<div class="panel" id="panel-finance">
+
+  <!-- 월 네비게이션 -->
+  <div class="fin-month-nav">
+    <button class="fin-month-btn" onclick="finChangeMonth(-1)">‹</button>
+    <div class="fin-month-title" id="fin-month-title"></div>
+    <button class="fin-month-btn" onclick="finChangeMonth(1)">›</button>
+  </div>
+
+  <!-- 요약 카드 -->
+  <div class="summary-cards" id="fin-summary"></div>
+
+  <!-- 직원별 세션·수입 -->
+  <div class="section-header">👥 직원별 세션 & 수입</div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="staff-fin-table">
+      <thead><tr>
+        <th style="text-align:left">직원</th>
+        <th>세션 수</th>
+        <th>세션 수입</th>
+        <th>추가 수당</th>
+        <th>총 수입</th>
+      </tr></thead>
+      <tbody id="fin-staff-body"></tbody>
+    </table>
+  </div>
+
+  <!-- 매출 입력 -->
+  <div class="section-header">📥 매출 입력</div>
+  <div class="card">
+    <div class="fin-input-grid">
+      <div class="fin-input-item">
+        <label>PT 매출 (만원)</label>
+        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-pt-rev" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+      </div>
+      <div class="fin-input-item">
+        <label>기타 매출 (만원)</label>
+        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-other-rev" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 지출 입력 -->
+  <div class="section-header">📤 지출 입력</div>
+  <div class="card">
+    <div class="fin-input-grid">
+      <div class="fin-input-item">
+        <label>임대·관리비 (만원)</label>
+        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-rent" placeholder="400" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+      </div>
+      <div class="fin-input-item">
+        <label>기기·소모품 (만원)</label>
+        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-equip" placeholder="80" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+      </div>
+      <div class="fin-input-item">
+        <label>4대보험 사측 (만원)</label>
+        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-insur" placeholder="60" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+      </div>
+      <div class="fin-input-item">
+        <label>기타 지출 (만원)</label>
+        <div class="fin-unit-row"><input class="fin-num" type="number" id="fin-other-exp" placeholder="0" oninput="saveFinInput()"><span class="fin-unit">만</span></div>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <label style="font-size:0.7rem;font-weight:600;color:var(--text-2)">메모</label>
+      <input type="text" class="fin-num" id="fin-memo" placeholder="이번 달 특이사항 (선택)" style="text-align:left;margin-top:4px" oninput="saveFinInput()">
+    </div>
+  </div>
+
+  <!-- 직원 세션 입력 -->
+  <div class="section-header">✏️ 세션 수 입력</div>
+  <div class="card">
+    <div class="fin-input-grid">
+      <div class="fin-input-item">
+        <label>실장 세션 수</label>
+        <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-mgr-sess" placeholder="150" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
+      </div>
+      <div class="fin-input-item">
+        <label>정직원 세션 수</label>
+        <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-ft-sess" placeholder="150" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
+      </div>
+      <div class="fin-input-item">
+        <label>파트 세션 수</label>
+        <div class="fin-unit-row"><input class="fin-num staff-sess-input" type="number" id="fin-pt-sess" placeholder="88" oninput="saveFinInput()"><span class="fin-unit">회</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 추이 차트 -->
+  <div class="section-header">📈 6개월 추이</div>
+  <div class="card">
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#6C63FF"></div>매출</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#E5E7EB"></div>지출</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div>순이익</div>
+    </div>
+    <div class="chart-wrap" id="fin-chart"></div>
+  </div>
+
+  <!-- 제주 이주 목표 -->
+  <div class="section-header">🏝️ 제주 이주 재무 목표</div>
+  <div class="card">
+    <div class="plan-input-row" style="padding-top:0">
+      <div><div class="plan-input-label">목표 월 순이익</div><div class="plan-input-sub">이 이상이면 이주 재무 조건 충족</div></div>
+      <div class="plan-input-right">
+        <input class="plan-num" type="number" id="fin-target" value="300" min="0" oninput="renderFinance()">
+        <span class="plan-unit">만원</span>
+      </div>
+    </div>
+    <div id="fin-goal-section"></div>
+  </div>
+
+</div><!-- /panel-finance -->
 
 </div><!-- /main-area -->
 </div><!-- /app-layout -->
@@ -1092,6 +1284,7 @@ function showPanel(name) {
   if (name === 'calendar') renderCalendar();
   if (name === 'settings') renderSettings();
   if (name === 'plan') renderPlan();
+  if (name === 'finance') renderFinance();
 }
 
 // ══════════════════════════════════════════
@@ -1538,6 +1731,263 @@ function resetData() {
 }
 
 // ══════════════════════════════════════════
+//  FINANCE
+// ══════════════════════════════════════════
+
+let FIN = { months: {} };
+let currentFinMonth = '';
+
+function finInit() {
+  const now = new Date();
+  currentFinMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  try {
+    const s = localStorage.getItem('jejuplan_fin_v1');
+    if (s) FIN = JSON.parse(s);
+    if (!FIN.months) FIN.months = {};
+  } catch(e) { FIN = { months: {} }; }
+}
+
+function saveFin() {
+  localStorage.setItem('jejuplan_fin_v1', JSON.stringify(FIN));
+}
+
+function getFinData(ym) {
+  return FIN.months[ym] || { ptRev:0, otherRev:0, rent:0, equip:0, insur:0, otherExp:0, memo:'', mgrSess:0, ftSess:0, ptSess:0 };
+}
+
+function getPlanCfg() {
+  const g = id => parseFloat(document.getElementById(id)?.value) || 0;
+  return {
+    price:    g('plan-price')    || 50000,
+    mgrComm:  (g('plan-mgr-comm')  || 50) / 100,
+    mgrRevP:  (g('plan-mgr-rev')   || 3)  / 100,
+    ftComm:   (g('plan-ft-comm')   || 40) / 100,
+    ptComm:   (g('plan-pt-comm')   || 40) / 100,
+    ptBase:   (g('plan-pt-base')   || 50) * 10000
+  };
+}
+
+function calcFinMonth(ym) {
+  const d = getFinData(ym);
+  const cfg = getPlanCfg();
+  const ptRev   = d.ptRev * 10000;
+  const totalRev = (d.ptRev + d.otherRev) * 10000;
+  const mgrPay  = d.mgrSess * cfg.price * cfg.mgrComm + ptRev * cfg.mgrRevP;
+  const ftPay   = d.ftSess  * cfg.price * cfg.ftComm;
+  const ptPay   = d.ptSess  * cfg.price * cfg.ptComm + (d.ptSess > 0 ? cfg.ptBase : 0);
+  const labor   = mgrPay + ftPay + ptPay;
+  const fixedExp = (d.rent + d.equip + d.insur + d.otherExp) * 10000;
+  const totalExp = labor + fixedExp;
+  const profit   = totalRev - totalExp;
+  return { totalRev, ptRev, totalExp, labor, fixedExp, profit, mgrPay, ftPay, ptPay };
+}
+
+function getLast6Months(ym) {
+  let [y, m] = ym.split('-').map(Number);
+  const res = [];
+  for (let i = 5; i >= 0; i--) {
+    let mm = m - i, yy = y;
+    if (mm <= 0) { mm += 12; yy--; }
+    res.push(`${yy}-${String(mm).padStart(2,'0')}`);
+  }
+  return res;
+}
+
+function fmtM(n) { return Math.round(n / 10000); }
+function fmtMStr(n) { return Math.round(n / 10000) + '만'; }
+
+function saveFinInput() {
+  const g = id => { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
+  const gs = id => { const el = document.getElementById(id); return el ? (el.value || '') : ''; };
+  FIN.months[currentFinMonth] = {
+    ptRev: g('fin-pt-rev'), otherRev: g('fin-other-rev'),
+    rent: g('fin-rent'), equip: g('fin-equip'),
+    insur: g('fin-insur'), otherExp: g('fin-other-exp'),
+    memo: gs('fin-memo'),
+    mgrSess: g('fin-mgr-sess'), ftSess: g('fin-ft-sess'), ptSess: g('fin-pt-sess')
+  };
+  saveFin();
+  renderFinance();
+}
+
+function finChangeMonth(dir) {
+  let [y, m] = currentFinMonth.split('-').map(Number);
+  m += dir;
+  if (m > 12) { m = 1; y++; }
+  if (m < 1)  { m = 12; y--; }
+  currentFinMonth = `${y}-${String(m).padStart(2,'0')}`;
+  renderFinance();
+}
+
+function renderFinance() {
+  const ym = currentFinMonth;
+  const d  = getFinData(ym);
+  const c  = calcFinMonth(ym);
+
+  // 월 제목
+  const [y, m] = ym.split('-');
+  document.getElementById('fin-month-title').textContent = `${y}년 ${parseInt(m)}월`;
+
+  // 전월 계산
+  let [py, pm] = [parseInt(y), parseInt(m) - 1];
+  if (pm < 1) { pm = 12; py--; }
+  const prevYM = `${py}-${String(pm).padStart(2,'0')}`;
+  const pc = calcFinMonth(prevYM);
+
+  function changeBadge(curr, prev) {
+    if (!prev) return '<span class="change-eq">-</span>';
+    const diff = curr - prev;
+    const pct = Math.round(diff / Math.abs(prev) * 100);
+    if (diff > 0) return `<span class="change-up">▲ ${pct}%</span>`;
+    if (diff < 0) return `<span class="change-dn">▼ ${Math.abs(pct)}%</span>`;
+    return '<span class="change-eq">±0%</span>';
+  }
+
+  const profCls = c.profit >= 0 ? 'profit-pos' : 'profit-neg';
+  document.getElementById('fin-summary').innerHTML = `
+    <div class="summary-card">
+      <div class="summary-label">총 매출</div>
+      <div class="summary-num">${fmtM(c.totalRev)}만</div>
+      <div class="summary-change">${changeBadge(c.totalRev, pc.totalRev)}</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">총 지출</div>
+      <div class="summary-num">${fmtM(c.totalExp)}만</div>
+      <div class="summary-change">${changeBadge(c.totalExp, pc.totalExp)}</div>
+    </div>
+    <div class="summary-card ${profCls}">
+      <div class="summary-label">순이익</div>
+      <div class="summary-num">${fmtM(c.profit)}만</div>
+      <div class="summary-change">${changeBadge(c.profit, pc.profit)}</div>
+    </div>`;
+
+  // 입력 필드 채우기
+  const set = (id, val) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = val || ''; };
+  set('fin-pt-rev', d.ptRev || ''); set('fin-other-rev', d.otherRev || '');
+  set('fin-rent', d.rent || ''); set('fin-equip', d.equip || '');
+  set('fin-insur', d.insur || ''); set('fin-other-exp', d.otherExp || '');
+  set('fin-memo', d.memo || '');
+  set('fin-mgr-sess', d.mgrSess || ''); set('fin-ft-sess', d.ftSess || ''); set('fin-pt-sess', d.ptSess || '');
+
+  // 직원 테이블
+  const cfg = getPlanCfg();
+  const ptRevBonus = d.ptRev * 10000 * cfg.mgrRevP;
+  document.getElementById('fin-staff-body').innerHTML = `
+    <tr>
+      <td class="staff-name">실장</td>
+      <td>${d.mgrSess}회</td>
+      <td>${fmtMStr(d.mgrSess * cfg.price * cfg.mgrComm)}</td>
+      <td style="font-size:0.72rem;color:var(--text-2)">매출 ${Math.round(cfg.mgrRevP*100)}% = ${fmtMStr(ptRevBonus)}</td>
+      <td class="staff-pay-num">${fmtMStr(c.mgrPay)}</td>
+    </tr>
+    <tr>
+      <td class="staff-name">정직원</td>
+      <td>${d.ftSess}회</td>
+      <td>${fmtMStr(c.ftPay)}</td>
+      <td style="font-size:0.72rem;color:var(--text-3)">없음</td>
+      <td class="staff-pay-num">${fmtMStr(c.ftPay)}</td>
+    </tr>
+    <tr>
+      <td class="staff-name">파트</td>
+      <td>${d.ptSess}회</td>
+      <td>${fmtMStr(d.ptSess * cfg.price * cfg.ptComm)}</td>
+      <td style="font-size:0.72rem;color:var(--text-2)">기본 ${fmtMStr(d.ptSess > 0 ? cfg.ptBase : 0)}</td>
+      <td class="staff-pay-num">${fmtMStr(c.ptPay)}</td>
+    </tr>
+    <tr style="background:var(--bg)">
+      <td class="staff-name" colspan="4" style="font-weight:700;color:var(--text-2);font-size:0.78rem">인건비 합계</td>
+      <td class="staff-pay-num">${fmtMStr(c.labor)}</td>
+    </tr>`;
+
+  // 차트
+  drawFinChart(getLast6Months(ym));
+
+  // 제주 목표
+  const target = (parseFloat(document.getElementById('fin-target')?.value) || 300) * 10000;
+  const pct    = Math.min(Math.max(c.profit / target * 100, 0), 100);
+  const gap    = target - c.profit;
+  let statusCls, statusMsg;
+  if (c.profit >= target) {
+    statusCls = 'ok'; statusMsg = `✅ 목표 달성! 이번 달 +${fmtMStr(c.profit - target)} 여유`;
+  } else if (c.profit >= target * 0.7) {
+    statusCls = 'warn'; statusMsg = `⚠️ 목표까지 ${fmtMStr(gap)} 부족 — 세션 수 또는 단가 점검 필요`;
+  } else {
+    statusCls = 'bad'; statusMsg = `🚨 목표 대비 ${fmtMStr(gap)} 부족 — 매출·지출 구조 재검토 필요`;
+  }
+
+  const months6 = getLast6Months(ym);
+  const achieved = months6.filter(m2 => calcFinMonth(m2).profit >= target).length;
+
+  document.getElementById('fin-goal-section').innerHTML = `
+    <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px">
+      <span style="color:var(--text-2)">이번 달 달성률</span>
+      <span style="font-weight:700;color:var(--primary)">${Math.round(pct)}%</span>
+    </div>
+    <div class="goal-bar-wrap"><div class="goal-bar-fill" style="width:${pct}%"></div></div>
+    <div class="goal-status ${statusCls}">${statusMsg}</div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <div style="font-size:0.72rem;font-weight:700;color:var(--text-2);margin-bottom:8px">최근 6개월 목표 달성 현황</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${months6.map(m2 => {
+          const p = calcFinMonth(m2).profit;
+          const ok = p >= target;
+          const [my, mm] = m2.split('-');
+          return `<div style="background:${ok ? 'var(--green-light)' : 'var(--bg)'};color:${ok ? 'var(--green)' : 'var(--text-3)'};border-radius:8px;padding:5px 10px;font-size:0.72rem;font-weight:700;text-align:center">
+            ${parseInt(mm)}월<br>${p ? fmtMStr(p) : '-'}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+function drawFinChart(months) {
+  const vals = months.map(ym => calcFinMonth(ym));
+  const maxVal = Math.max(...vals.flatMap(v => [v.totalRev, v.totalExp, Math.abs(v.profit)]), 1000000);
+  const W = 340, H = 180, PAD_L = 36, PAD_B = 24, PAD_T = 10;
+  const chartH = H - PAD_B - PAD_T;
+  const slotW = (W - PAD_L) / months.length;
+  const BAR_W = Math.min(slotW * 0.25, 14);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;overflow:visible">`;
+
+  // Y grid lines
+  [0, 0.25, 0.5, 0.75, 1].forEach(r => {
+    const y = PAD_T + chartH * (1 - r);
+    const label = Math.round(maxVal * r / 10000);
+    svg += `<line x1="${PAD_L}" y1="${y}" x2="${W}" y2="${y}" stroke="#E5E7EB" stroke-width="1"/>`;
+    svg += `<text x="${PAD_L - 4}" y="${y + 4}" text-anchor="end" font-size="8" fill="#9CA3AF">${label}</text>`;
+  });
+
+  vals.forEach((v, i) => {
+    const cx = PAD_L + slotW * i + slotW / 2;
+    const [, mm] = months[i].split('-');
+
+    const barH = (n, isNeg) => {
+      const h = Math.abs(n) / maxVal * chartH;
+      return Math.max(h, n !== 0 ? 2 : 0);
+    };
+
+    const revH  = barH(v.totalRev);
+    const expH  = barH(v.totalExp);
+    const profH = barH(v.profit);
+    const profColor = v.profit >= 0 ? '#10B981' : '#EF4444';
+
+    const x1 = cx - BAR_W * 1.6;
+    const x2 = cx - BAR_W * 0.2;
+    const x3 = cx + BAR_W * 0.9;
+
+    svg += `<rect x="${x1}" y="${PAD_T + chartH - revH}" width="${BAR_W}" height="${revH}" fill="#6C63FF" rx="2" opacity="0.85"/>`;
+    svg += `<rect x="${x2}" y="${PAD_T + chartH - expH}" width="${BAR_W}" height="${expH}" fill="#E5E7EB" rx="2"/>`;
+    svg += `<rect x="${x3}" y="${PAD_T + chartH - profH}" width="${BAR_W}" height="${profH}" fill="${profColor}" rx="2" opacity="0.9"/>`;
+
+    svg += `<text x="${cx}" y="${H - 6}" text-anchor="middle" font-size="9" fill="#9CA3AF">${parseInt(mm)}월</text>`;
+  });
+
+  svg += '</svg>';
+  document.getElementById('fin-chart').innerHTML = svg;
+}
+
+// ══════════════════════════════════════════
 //  PLAN
 // ══════════════════════════════════════════
 
@@ -1603,6 +2053,7 @@ function renderPlan() {
 // ══════════════════════════════════════════
 
 loadState();
+finInit();
 renderHome();
 </script>
 </body>
